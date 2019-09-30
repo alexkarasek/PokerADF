@@ -106,7 +106,8 @@
 							"sink": {
 								"type": "DelimitedTextSink",
 								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
+									"type": "AzureBlobFSWriteSettings",
+									"copyBehavior": "PreserveHierarchy"
 								},
 								"formatSettings": {
 									"type": "DelimitedTextWriteSettings",
@@ -364,7 +365,10 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"folderPath": "Test/Text/20190620",
+						"folderPath": {
+							"value": "@dataset().jsonPath",
+							"type": "Expression"
+						},
 						"fileSystem": "gamedata"
 					},
 					"columnDelimiter": "|",

@@ -1,0 +1,183 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "akpshhfactory"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/CopyDataFromLocalToADLS')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy_Local_to_Blobs",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "FileServerReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": {
+										"value": "@{pipeline().parameters.localdir}",
+										"type": "Expression"
+									},
+									"wildcardFileName": "*.json",
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings",
+									"copyBehavior": "PreserveHierarchy"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ""
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "LocalSrc",
+								"type": "DatasetReference"
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "RawJSONStore",
+								"type": "DatasetReference",
+								"parameters": {
+									"jsonPath": "@pipeline().parameters.RawJSONStore"
+								}
+							}
+						]
+					}
+				],
+				"parameters": {
+					"localdir": {
+						"type": "string",
+						"defaultValue": "blah"
+					},
+					"RawJSONStore": {
+						"type": "string",
+						"defaultValue": "blah"
+					},
+					"TargetADLSStore": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"boblpath": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/RawJSONStore')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RawJSONStore')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ADLSData",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"jsonPath": {
+						"type": "string",
+						"defaultValue": "@pipeline().parameters.RawJSONStore"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": {
+							"value": "@dataset().jsonPath",
+							"type": "Expression"
+						},
+						"fileSystem": "gamedata"
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "id",
+						"type": "String"
+					},
+					{
+						"name": "timestamp",
+						"type": "String"
+					},
+					{
+						"name": "sitename",
+						"type": "String"
+					},
+					{
+						"name": "tablename",
+						"type": "String"
+					},
+					{
+						"name": "limits",
+						"type": "String"
+					},
+					{
+						"name": "buttonseat",
+						"type": "String"
+					},
+					{
+						"name": "GameActionId",
+						"type": "String"
+					},
+					{
+						"name": "streetname",
+						"type": "String"
+					},
+					{
+						"name": "action",
+						"type": "String"
+					},
+					{
+						"name": "actor",
+						"type": "String"
+					},
+					{
+						"name": "amount",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		}
+	]
+}
