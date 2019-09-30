@@ -342,10 +342,10 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "ADLSTextSink",
+						"referenceName": "TargetADLSStore",
 						"type": "DatasetReference",
 						"parameters": {
-							"jsonPath": "@pipeline().parameters.blobpath"
+							"adlsPath": "@pipeline().parameters.TargetADLSStore"
 						}
 					}
 				]
