@@ -6,8 +6,8 @@
 		"type": "FileServer",
 		"typeProperties": {
 			"host": "C:\\Users\\alkarase",
-			"userId": "alkarase",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiIxZDFhOGYzZS0yNzNjLTRhZmMtOTYyZC1mOWQwNjMwODMxMGQiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+			"userId": "NorthAmerica\\alkarase",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJlMTE1YWM3Yy05NDIyLTQxNDYtOTdmYi0wMjE5ODVjM2E0NjMiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
 		},
 		"connectVia": {
 			"referenceName": "integrationRuntime2",
