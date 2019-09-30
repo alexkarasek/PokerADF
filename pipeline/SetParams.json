@@ -55,10 +55,11 @@
 							"value": "@{activity('Lookup params').output.FirstRow.Prop_0}",
 							"type": "Expression"
 						},
-						"blobpath": {
+						"RawJSONStore": {
 							"value": "@{activity('Lookup params').output.FirstRow.Prop_1}",
 							"type": "Expression"
-						}
+						},
+						"TargetADLSStore": "@{activity('Lookup params').output.FirstRow.Prop_2}"
 					}
 				}
 			}
