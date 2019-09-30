@@ -321,12 +321,6 @@
 						]
 					}
 				},
-				"inputs": [
-					{
-						"referenceName": "BlobJSONSrc",
-						"type": "DatasetReference"
-					}
-				],
 				"outputs": [
 					{
 						"referenceName": "ADLSTextSink",
@@ -381,8 +375,11 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "ADLSTextSink",
-						"type": "DatasetReference"
+						"referenceName": "RawJSONStore",
+						"type": "DatasetReference",
+						"parameters": {
+							"jsonPath": "@pipeline().parameters.RawJSONStore"
+						}
 					}
 				]
 			}
@@ -392,9 +389,12 @@
 				"type": "string",
 				"defaultValue": "blah"
 			},
-			"blobpath": {
+			"RawJSONStore": {
 				"type": "string",
 				"defaultValue": "blah"
+			},
+			"TargetADLSStore": {
+				"type": "string"
 			}
 		},
 		"variables": {
