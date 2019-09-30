@@ -1,0 +1,74 @@
+{
+	"name": "SetParams",
+	"properties": {
+		"activities": [
+			{
+				"name": "Lookup params",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"wildcardFileName": "*.*"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"dataset": {
+						"referenceName": "RdyFile",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "start Import",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Lookup params",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "CopyDataFromLocalToADLS",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"localdir": {
+							"value": "@{activity('Lookup params').output.FirstRow.Prop_0}",
+							"type": "Expression"
+						},
+						"blobpath": {
+							"value": "@{activity('Lookup params').output.FirstRow.Prop_1}",
+							"type": "Expression"
+						}
+					}
+				}
+			}
+		],
+		"variables": {
+			"blobpath": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

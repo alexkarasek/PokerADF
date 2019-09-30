@@ -1,0 +1,66 @@
+{
+	"name": "SQLDW_Sink",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SQLDW",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "varchar"
+			},
+			{
+				"name": "timestamp",
+				"type": "varchar"
+			},
+			{
+				"name": "sitename",
+				"type": "varchar"
+			},
+			{
+				"name": "tablename",
+				"type": "varchar"
+			},
+			{
+				"name": "limits",
+				"type": "varchar"
+			},
+			{
+				"name": "buttonseat",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "gameactionid",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "streetname",
+				"type": "varchar"
+			},
+			{
+				"name": "action",
+				"type": "varchar"
+			},
+			{
+				"name": "actor",
+				"type": "varchar"
+			},
+			{
+				"name": "amount",
+				"type": "decimal",
+				"precision": 9,
+				"scale": 2
+			}
+		],
+		"typeProperties": {
+			"schema": "stg",
+			"table": "HH_Stage"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

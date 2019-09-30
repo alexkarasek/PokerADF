@@ -1,0 +1,24 @@
+{
+	"name": "AzDev01Trigger",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "CopyDataFromLocalToADLS",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/pshharchive/blobs/",
+			"blobPathEndsWith": "Flags/azdev01.rdy",
+			"scope": "/subscriptions/1be2307a-3f38-4358-9243-da34bdd7eb2d/resourceGroups/ak-PSHandHistory/providers/Microsoft.Storage/storageAccounts/akpshharchive",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}

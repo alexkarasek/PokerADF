@@ -1,0 +1,75 @@
+{
+	"name": "ADLSTextSink",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ADLSData",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"jsonPath": {
+				"type": "string",
+				"defaultValue": "@pipeline().parameters.blobpath"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "Test/Text/20190620",
+				"fileSystem": "gamedata"
+			},
+			"columnDelimiter": "|",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "id",
+				"type": "String"
+			},
+			{
+				"name": "timestamp",
+				"type": "String"
+			},
+			{
+				"name": "sitename",
+				"type": "String"
+			},
+			{
+				"name": "tablename",
+				"type": "String"
+			},
+			{
+				"name": "limits",
+				"type": "String"
+			},
+			{
+				"name": "buttonseat",
+				"type": "String"
+			},
+			{
+				"name": "GameActionId",
+				"type": "String"
+			},
+			{
+				"name": "streetname",
+				"type": "String"
+			},
+			{
+				"name": "action",
+				"type": "String"
+			},
+			{
+				"name": "actor",
+				"type": "String"
+			},
+			{
+				"name": "amount",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
