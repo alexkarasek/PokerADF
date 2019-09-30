@@ -169,8 +169,11 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ADLSTextSink",
-						"type": "DatasetReference"
+						"referenceName": "TargetADLSStore",
+						"type": "DatasetReference",
+						"parameters": {
+							"adlsPath": "@pipeline().parameters.TargetADLSStore"
+						}
 					}
 				],
 				"outputs": [
@@ -201,8 +204,15 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "BlobSource",
-						"recursive": true
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"wildcardFileName": "*.*"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
 					},
 					"sink": {
 						"type": "DelimitedTextSink",
@@ -321,10 +331,22 @@
 						]
 					}
 				},
+				"inputs": [
+					{
+						"referenceName": "RawJSONStore",
+						"type": "DatasetReference",
+						"parameters": {
+							"jsonPath": "@pipeline().parameters.RawJSONStore"
+						}
+					}
+				],
 				"outputs": [
 					{
 						"referenceName": "ADLSTextSink",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"jsonPath": "@pipeline().parameters.blobpath"
+						}
 					}
 				]
 			},
