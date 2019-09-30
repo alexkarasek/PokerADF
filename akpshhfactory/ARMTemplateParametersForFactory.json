@@ -1,0 +1,51 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "akpshhfactory"
+		},
+		"integrationRuntime_akdev01": {
+			"value": "akdev01"
+		},
+		"integrationRuntime_integrationRuntime2": {
+			"value": "integrationRuntime2"
+		},
+		"integrationRuntime_integrationRuntime3": {
+			"value": "integrationRuntime3"
+		},
+		"ADLSData_accountKey": {
+			"value": ""
+		},
+		"BlobSrc_connectionString": {
+			"value": ""
+		},
+		"FileServer1_password": {
+			"value": ""
+		},
+		"SQLDW_connectionString": {
+			"value": ""
+		},
+		"ADLSData_properties_typeProperties_url": {
+			"value": "https://akpshhdatalake.dfs.core.windows.net"
+		},
+		"FileServer1_properties_typeProperties_host": {
+			"value": "C:\\Users\\alkarase"
+		},
+		"FileServer1_properties_typeProperties_userId": {
+			"value": "NorthAmerica\\alkarase"
+		},
+		"HttpServer1_properties_typeProperties_url": {
+			"value": "https://google.com"
+		},
+		"AzDev01Trigger_properties_typeProperties_scope": {
+			"value": "/subscriptions/1be2307a-3f38-4358-9243-da34bdd7eb2d/resourceGroups/ak-PSHandHistory/providers/Microsoft.Storage/storageAccounts/akpshharchive"
+		},
+		"EventTrigger_properties_typeProperties_scope": {
+			"value": "/subscriptions/1be2307a-3f38-4358-9243-da34bdd7eb2d/resourceGroups/ak-PSHandHistory/providers/Microsoft.Storage/storageAccounts/akpshharchive"
+		},
+		"trigger1_properties_typeProperties_scope": {
+			"value": "/subscriptions/1be2307a-3f38-4358-9243-da34bdd7eb2d/resourceGroups/ak-PSHandHistory/providers/Microsoft.Storage/storageAccounts/akpshharchive"
+		}
+	}
+}
