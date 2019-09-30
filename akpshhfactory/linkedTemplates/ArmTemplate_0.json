@@ -298,11 +298,10 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"folderPath": {
+						"fileSystem": {
 							"value": "@dataset().jsonPath",
 							"type": "Expression"
-						},
-						"fileSystem": "gamedata"
+						}
 					},
 					"columnDelimiter": "|",
 					"escapeChar": "\\",
