@@ -59,7 +59,10 @@
 							"value": "@{activity('Lookup params').output.FirstRow.Prop_1}",
 							"type": "Expression"
 						},
-						"TargetADLSStore": "@{activity('Lookup params').output.FirstRow.Prop_2}"
+						"TargetADLSStore": {
+							"value": "@{activity('Lookup params').output.FirstRow.Prop_2}",
+							"type": "Expression"
+						}
 					}
 				}
 			}
