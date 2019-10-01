@@ -78,7 +78,7 @@
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
 							"recursive": false,
-							"wildcardFileName": "*.json",
+							"wildcardFileName": "201498409090.json",
 							"enablePartitionDiscovery": false
 						}
 					},
