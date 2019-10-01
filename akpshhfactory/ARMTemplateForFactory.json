@@ -104,15 +104,13 @@
 								}
 							},
 							"sink": {
-								"type": "DelimitedTextSink",
+								"type": "JsonSink",
 								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings",
-									"copyBehavior": "PreserveHierarchy"
+									"type": "AzureBlobFSWriteSettings"
 								},
 								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ""
+									"type": "JsonWriteSettings",
+									"quoteAllText": true
 								}
 							},
 							"enableStaging": false
@@ -126,10 +124,154 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "RawJSONStore",
+								"referenceName": "JSONStore",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy_JSON_to_Parquet",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Copy_Local_to_Blobs",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"wildcardFileName": "*.json"
+								}
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['id']"
+										},
+										"sink": {
+											"name": "id"
+										}
+									},
+									{
+										"source": {
+											"path": "$['timestamp']"
+										},
+										"sink": {
+											"name": "timestamp"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sitename']"
+										},
+										"sink": {
+											"name": "sitename"
+										}
+									},
+									{
+										"source": {
+											"path": "$['tablename']"
+										},
+										"sink": {
+											"name": "tablename"
+										}
+									},
+									{
+										"source": {
+											"path": "$['limits']"
+										},
+										"sink": {
+											"name": "limits"
+										}
+									},
+									{
+										"source": {
+											"path": "$['buttonseat']"
+										},
+										"sink": {
+											"name": "buttonseat"
+										}
+									},
+									{
+										"source": {
+											"path": "$['actions'][0]['GameActionId']"
+										},
+										"sink": {
+											"name": "GameActionId"
+										}
+									},
+									{
+										"source": {
+											"path": "$['actions'][0]['streetname']"
+										},
+										"sink": {
+											"name": "streetname"
+										}
+									},
+									{
+										"source": {
+											"path": "$['actions'][0]['action']"
+										},
+										"sink": {
+											"name": "action"
+										}
+									},
+									{
+										"source": {
+											"path": "$['actions'][0]['actor']"
+										},
+										"sink": {
+											"name": "actor"
+										}
+									},
+									{
+										"source": {
+											"path": "$['actions'][0]['amount']"
+										},
+										"sink": {
+											"name": "amount"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "JSONStore",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ParquetStore",
 								"type": "DatasetReference",
 								"parameters": {
-									"jsonPath": "@pipeline().parameters.RawJSONStore"
+									"parquetPath": "@pipeline().parameters.TargetADLSStore"
 								}
 							}
 						]
@@ -142,10 +284,11 @@
 					},
 					"RawJSONStore": {
 						"type": "string",
-						"defaultValue": "blah"
+						"defaultValue": "gamedata\\Data\\Raw\\Sample"
 					},
 					"TargetADLSStore": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "gamedata\\Data\\Struct\\Sample"
 					}
 				},
 				"variables": {
@@ -157,7 +300,8 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/LocalSrc')]",
-				"[concat(variables('factoryId'), '/datasets/RawJSONStore')]"
+				"[concat(variables('factoryId'), '/datasets/JSONStore')]",
+				"[concat(variables('factoryId'), '/datasets/ParquetStore')]"
 			]
 		},
 		{
@@ -245,7 +389,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ADLSTextSink')]",
+			"name": "[concat(parameters('factoryName'), '/JSONStore')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -256,68 +400,83 @@
 				"parameters": {
 					"jsonPath": {
 						"type": "string",
-						"defaultValue": "@pipeline().parameters.blobpath"
+						"defaultValue": "@pipeline().parameters.RawJSONStore"
 					}
 				},
 				"annotations": [],
-				"type": "DelimitedText",
+				"type": "Json",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"folderPath": "Test/Text/20190620",
-						"fileSystem": "gamedata"
-					},
-					"columnDelimiter": "|",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "id",
-						"type": "String"
-					},
-					{
-						"name": "timestamp",
-						"type": "String"
-					},
-					{
-						"name": "sitename",
-						"type": "String"
-					},
-					{
-						"name": "tablename",
-						"type": "String"
-					},
-					{
-						"name": "limits",
-						"type": "String"
-					},
-					{
-						"name": "buttonseat",
-						"type": "String"
-					},
-					{
-						"name": "GameActionId",
-						"type": "String"
-					},
-					{
-						"name": "streetname",
-						"type": "String"
-					},
-					{
-						"name": "action",
-						"type": "String"
-					},
-					{
-						"name": "actor",
-						"type": "String"
-					},
-					{
-						"name": "amount",
-						"type": "String"
+						"fileSystem": {
+							"value": "@dataset().jsonPath",
+							"type": "Expression"
+						}
 					}
-				]
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"timestamp": {
+							"type": "string"
+						},
+						"sitename": {
+							"type": "string"
+						},
+						"tablename": {
+							"type": "string"
+						},
+						"limits": {
+							"type": "string"
+						},
+						"buttonseat": {
+							"type": "integer"
+						},
+						"seats": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"playername": {
+										"type": "string"
+									},
+									"seatno": {
+										"type": "integer"
+									},
+									"position": {
+										"type": "null"
+									}
+								}
+							}
+						},
+						"actions": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"GameActionId": {
+										"type": "integer"
+									},
+									"streetname": {
+										"type": "string"
+									},
+									"action": {
+										"type": "string"
+									},
+									"actor": {
+										"type": "string"
+									},
+									"amount": {
+										"type": "number"
+									}
+								}
+							}
+						}
+					}
+				}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ADLSData')]"
@@ -346,7 +505,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/RawJSONStore')]",
+			"name": "[concat(parameters('factoryName'), '/ParquetStore')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -355,72 +514,24 @@
 					"type": "LinkedServiceReference"
 				},
 				"parameters": {
-					"jsonPath": {
+					"parquetPath": {
 						"type": "string",
-						"defaultValue": "@pipeline().parameters.RawJSONStore"
+						"defaultValue": "@pipeline().parameters.TargetADLSStore"
 					}
 				},
 				"annotations": [],
-				"type": "DelimitedText",
+				"type": "Parquet",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
 						"fileSystem": {
-							"value": "@dataset().jsonPath",
+							"value": "@dataset().parquetPath",
 							"type": "Expression"
 						}
 					},
-					"columnDelimiter": "|",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
+					"compressionCodec": "snappy"
 				},
-				"schema": [
-					{
-						"name": "id",
-						"type": "String"
-					},
-					{
-						"name": "timestamp",
-						"type": "String"
-					},
-					{
-						"name": "sitename",
-						"type": "String"
-					},
-					{
-						"name": "tablename",
-						"type": "String"
-					},
-					{
-						"name": "limits",
-						"type": "String"
-					},
-					{
-						"name": "buttonseat",
-						"type": "String"
-					},
-					{
-						"name": "GameActionId",
-						"type": "String"
-					},
-					{
-						"name": "streetname",
-						"type": "String"
-					},
-					{
-						"name": "action",
-						"type": "String"
-					},
-					{
-						"name": "actor",
-						"type": "String"
-					},
-					{
-						"name": "amount",
-						"type": "String"
-					}
-				]
+				"schema": []
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ADLSData')]"
@@ -526,85 +637,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/SQLDW')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/TargetADLSStore')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ADLSData",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"adlsPath": {
-						"type": "string",
-						"defaultValue": "@pipeline().parameters.TargetADLSStore"
-					}
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"folderPath": "Test/Text/20190620",
-						"fileSystem": "gamedata"
-					},
-					"columnDelimiter": "|",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "id",
-						"type": "String"
-					},
-					{
-						"name": "timestamp",
-						"type": "String"
-					},
-					{
-						"name": "sitename",
-						"type": "String"
-					},
-					{
-						"name": "tablename",
-						"type": "String"
-					},
-					{
-						"name": "limits",
-						"type": "String"
-					},
-					{
-						"name": "buttonseat",
-						"type": "String"
-					},
-					{
-						"name": "GameActionId",
-						"type": "String"
-					},
-					{
-						"name": "streetname",
-						"type": "String"
-					},
-					{
-						"name": "action",
-						"type": "String"
-					},
-					{
-						"name": "actor",
-						"type": "String"
-					},
-					{
-						"name": "amount",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ADLSData')]"
 			]
 		},
 		{
