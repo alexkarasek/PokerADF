@@ -82,9 +82,14 @@
 						}
 					},
 					"sink": {
-						"type": "ParquetSink",
+						"type": "DelimitedTextSink",
 						"storeSettings": {
 							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
 						}
 					},
 					"enableStaging": false,
@@ -96,7 +101,7 @@
 									"path": "$['id']"
 								},
 								"sink": {
-									"name": "id"
+									"ordinal": 1
 								}
 							},
 							{
@@ -104,7 +109,7 @@
 									"path": "$['timestamp']"
 								},
 								"sink": {
-									"name": "timestamp"
+									"ordinal": 2
 								}
 							},
 							{
@@ -112,7 +117,7 @@
 									"path": "$['sitename']"
 								},
 								"sink": {
-									"name": "sitename"
+									"ordinal": 3
 								}
 							},
 							{
@@ -120,7 +125,7 @@
 									"path": "$['tablename']"
 								},
 								"sink": {
-									"name": "tablename"
+									"ordinal": 4
 								}
 							},
 							{
@@ -128,7 +133,7 @@
 									"path": "$['limits']"
 								},
 								"sink": {
-									"name": "limits"
+									"ordinal": 5
 								}
 							},
 							{
@@ -136,7 +141,7 @@
 									"path": "$['buttonseat']"
 								},
 								"sink": {
-									"name": "buttonseat"
+									"ordinal": 6
 								}
 							},
 							{
@@ -144,7 +149,7 @@
 									"path": "$['actions'][0]['GameActionId']"
 								},
 								"sink": {
-									"name": "GameActionId"
+									"ordinal": 7
 								}
 							},
 							{
@@ -152,7 +157,7 @@
 									"path": "$['actions'][0]['streetname']"
 								},
 								"sink": {
-									"name": "streetname"
+									"ordinal": 8
 								}
 							},
 							{
@@ -160,7 +165,7 @@
 									"path": "$['actions'][0]['action']"
 								},
 								"sink": {
-									"name": "action"
+									"ordinal": 9
 								}
 							},
 							{
@@ -168,7 +173,7 @@
 									"path": "$['actions'][0]['actor']"
 								},
 								"sink": {
-									"name": "actor"
+									"ordinal": 10
 								}
 							},
 							{
@@ -176,7 +181,7 @@
 									"path": "$['actions'][0]['amount']"
 								},
 								"sink": {
-									"name": "amount"
+									"ordinal": 11
 								}
 							}
 						]
@@ -185,16 +190,16 @@
 				"inputs": [
 					{
 						"referenceName": "JSONStore",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"jsonPath": "@pipeline().parameters.RawJSONStore"
+						}
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "ParquetStore",
-						"type": "DatasetReference",
-						"parameters": {
-							"parquetPath": "@pipeline().parameters.TargetADLSStore"
-						}
+						"referenceName": "DebugTarget",
+						"type": "DatasetReference"
 					}
 				]
 			}
