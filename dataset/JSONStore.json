@@ -8,7 +8,7 @@
 		"parameters": {
 			"jsonPath": {
 				"type": "string",
-				"defaultValue": "@pipeline().parameters.JSONStore"
+				"defaultValue": "@pipeline().parameters.RawJSONStore"
 			}
 		},
 		"annotations": [],
