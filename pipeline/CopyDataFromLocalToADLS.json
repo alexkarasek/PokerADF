@@ -77,8 +77,9 @@
 						"type": "JsonSource",
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
-							"recursive": true,
-							"wildcardFileName": "*.json"
+							"recursive": false,
+							"wildcardFileName": "*.json",
+							"enablePartitionDiscovery": false
 						}
 					},
 					"sink": {
@@ -146,7 +147,7 @@
 							},
 							{
 								"source": {
-									"path": "$['actions'][0]['GameActionId']"
+									"path": "['GameActionId']"
 								},
 								"sink": {
 									"ordinal": 7
@@ -154,7 +155,7 @@
 							},
 							{
 								"source": {
-									"path": "$['actions'][0]['streetname']"
+									"path": "['streetname']"
 								},
 								"sink": {
 									"ordinal": 8
@@ -162,7 +163,7 @@
 							},
 							{
 								"source": {
-									"path": "$['actions'][0]['action']"
+									"path": "['action']"
 								},
 								"sink": {
 									"ordinal": 9
@@ -170,7 +171,7 @@
 							},
 							{
 								"source": {
-									"path": "$['actions'][0]['actor']"
+									"path": "['actor']"
 								},
 								"sink": {
 									"ordinal": 10
@@ -178,22 +179,20 @@
 							},
 							{
 								"source": {
-									"path": "$['actions'][0]['amount']"
+									"path": "['amount']"
 								},
 								"sink": {
 									"ordinal": 11
 								}
 							}
-						]
+						],
+						"collectionReference": "$['actions']"
 					}
 				},
 				"inputs": [
 					{
 						"referenceName": "JSONStore",
-						"type": "DatasetReference",
-						"parameters": {
-							"jsonPath": "@pipeline().parameters.RawJSONStore"
-						}
+						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
