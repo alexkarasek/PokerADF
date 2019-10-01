@@ -5,21 +5,14 @@
 			"referenceName": "ADLSData",
 			"type": "LinkedServiceReference"
 		},
-		"parameters": {
-			"jsonPath": {
-				"type": "string",
-				"defaultValue": "@pipeline().parameters.RawJSONStore"
-			}
-		},
 		"annotations": [],
 		"type": "Json",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileSystem": {
-					"value": "@dataset().jsonPath",
-					"type": "Expression"
-				}
+				"fileName": "201498409090.json",
+				"folderPath": "Data/Raw/Sample",
+				"fileSystem": "gamedata"
 			}
 		},
 		"schema": {
