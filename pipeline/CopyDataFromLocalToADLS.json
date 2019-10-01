@@ -83,14 +83,9 @@
 						}
 					},
 					"sink": {
-						"type": "DelimitedTextSink",
+						"type": "ParquetSink",
 						"storeSettings": {
 							"type": "AzureBlobFSWriteSettings"
-						},
-						"formatSettings": {
-							"type": "DelimitedTextWriteSettings",
-							"quoteAllText": true,
-							"fileExtension": ".txt"
 						}
 					},
 					"enableStaging": false,
@@ -197,8 +192,11 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "DebugTarget",
-						"type": "DatasetReference"
+						"referenceName": "ParquetStore",
+						"type": "DatasetReference",
+						"parameters": {
+							"parquetPath": "@pipeline().parameters.TargetADLSStore"
+						}
 					}
 				]
 			}
