@@ -52,6 +52,151 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "Copy_JSON_to_Parquet",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Copy_Local_to_Blobs",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"wildcardFileName": "*.json"
+						}
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['id']"
+								},
+								"sink": {
+									"name": "id"
+								}
+							},
+							{
+								"source": {
+									"path": "$['timestamp']"
+								},
+								"sink": {
+									"name": "timestamp"
+								}
+							},
+							{
+								"source": {
+									"path": "$['sitename']"
+								},
+								"sink": {
+									"name": "sitename"
+								}
+							},
+							{
+								"source": {
+									"path": "$['tablename']"
+								},
+								"sink": {
+									"name": "tablename"
+								}
+							},
+							{
+								"source": {
+									"path": "$['limits']"
+								},
+								"sink": {
+									"name": "limits"
+								}
+							},
+							{
+								"source": {
+									"path": "$['buttonseat']"
+								},
+								"sink": {
+									"name": "buttonseat"
+								}
+							},
+							{
+								"source": {
+									"path": "$['actions'][0]['GameActionId']"
+								},
+								"sink": {
+									"name": "GameActionId"
+								}
+							},
+							{
+								"source": {
+									"path": "$['actions'][0]['streetname']"
+								},
+								"sink": {
+									"name": "streetname"
+								}
+							},
+							{
+								"source": {
+									"path": "$['actions'][0]['action']"
+								},
+								"sink": {
+									"name": "action"
+								}
+							},
+							{
+								"source": {
+									"path": "$['actions'][0]['actor']"
+								},
+								"sink": {
+									"name": "actor"
+								}
+							},
+							{
+								"source": {
+									"path": "$['actions'][0]['amount']"
+								},
+								"sink": {
+									"name": "amount"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "JSONStore",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ParquetStore",
+						"type": "DatasetReference",
+						"parameters": {
+							"parquetPath": "@pipeline().parameters.TargetADLSStore"
+						}
+					}
+				]
 			}
 		],
 		"parameters": {
