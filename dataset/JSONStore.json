@@ -1,0 +1,89 @@
+{
+	"name": "JSONStore",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ADLSData",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"jsonPath": {
+				"type": "string",
+				"defaultValue": "@pipeline().parameters.RawJSONStore"
+			}
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": {
+					"value": "@dataset().jsonPath",
+					"type": "Expression"
+				}
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "string"
+				},
+				"timestamp": {
+					"type": "string"
+				},
+				"sitename": {
+					"type": "string"
+				},
+				"tablename": {
+					"type": "string"
+				},
+				"limits": {
+					"type": "string"
+				},
+				"buttonseat": {
+					"type": "integer"
+				},
+				"seats": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"playername": {
+								"type": "string"
+							},
+							"seatno": {
+								"type": "integer"
+							},
+							"position": {
+								"type": "null"
+							}
+						}
+					}
+				},
+				"actions": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"GameActionId": {
+								"type": "integer"
+							},
+							"streetname": {
+								"type": "string"
+							},
+							"action": {
+								"type": "string"
+							},
+							"actor": {
+								"type": "string"
+							},
+							"amount": {
+								"type": "number"
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
