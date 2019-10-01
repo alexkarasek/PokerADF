@@ -15,7 +15,11 @@
 		"type": "Json",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobFSLocation"
+				"type": "AzureBlobFSLocation",
+				"fileSystem": {
+					"value": "@dataset().jsonPath",
+					"type": "Expression"
+				}
 			}
 		},
 		"schema": {
