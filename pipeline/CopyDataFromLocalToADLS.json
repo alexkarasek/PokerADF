@@ -57,6 +57,42 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "Copy_JSON_to_Parquet",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"wildcardFileName": "*.*"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "RawJSONStore",
+						"type": "DatasetReference",
+						"parameters": {
+							"jsonPath": "@pipeline().parameters.RawJSONStore"
+						}
+					}
+				]
 			}
 		],
 		"parameters": {
@@ -66,10 +102,11 @@
 			},
 			"RawJSONStore": {
 				"type": "string",
-				"defaultValue": "blah"
+				"defaultValue": "gamedata\\Data\\Raw\\Sample"
 			},
 			"TargetADLSStore": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "gamedata\\Data\\Struct\\Sample"
 			}
 		},
 		"variables": {
