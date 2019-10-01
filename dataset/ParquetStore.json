@@ -15,7 +15,11 @@
 		"type": "Parquet",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobFSLocation"
+				"type": "AzureBlobFSLocation",
+				"fileSystem": {
+					"value": "@dataset().parquetPath",
+					"type": "Expression"
+				}
 			},
 			"compressionCodec": "snappy"
 		},
