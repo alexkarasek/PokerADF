@@ -5,9 +5,9 @@
 		"annotations": [],
 		"type": "FileServer",
 		"typeProperties": {
-			"host": "C:\\Users\\alkarase",
+			"host": "C:\\Users\\akdev01_admin",
 			"userId": "akdev01_admin",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJmMzZjMzEwOC03NTNlLTQwNzQtYTkxNi1kMTI1MjEyYmZiNzIiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI5M2Q5ZDE1Yi0xNGI2LTRjZjEtYTkwYi0zOGY3ZmU3ZjcwMTMiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
 		},
 		"connectVia": {
 			"referenceName": "integrationRuntime2",
