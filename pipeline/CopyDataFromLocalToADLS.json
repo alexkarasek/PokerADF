@@ -85,7 +85,8 @@
 					"sink": {
 						"type": "ParquetSink",
 						"storeSettings": {
-							"type": "AzureBlobFSWriteSettings"
+							"type": "AzureBlobFSWriteSettings",
+							"copyBehavior": "MergeFiles"
 						}
 					},
 					"enableStaging": false,
@@ -187,7 +188,10 @@
 				"inputs": [
 					{
 						"referenceName": "JSONStore",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"jsonPath": "@pipeline().parameters.RawJSONStore"
+						}
 					}
 				],
 				"outputs": [
