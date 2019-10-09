@@ -54,7 +54,7 @@
 				]
 			},
 			{
-				"name": "Copy_JSON_to_Parquet",
+				"name": "Copy_JSON_to_ADLSStruct",
 				"type": "Copy",
 				"dependsOn": [
 					{
@@ -83,13 +83,17 @@
 						}
 					},
 					"sink": {
-						"type": "ParquetSink",
+						"type": "DelimitedTextSink",
 						"storeSettings": {
-							"type": "AzureBlobFSWriteSettings",
-							"copyBehavior": "MergeFiles"
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
 						}
 					},
-					"enableStaging": false,
+					"enableStaging": true,
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
@@ -196,10 +200,10 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "ParquetStore",
+						"referenceName": "TextStore",
 						"type": "DatasetReference",
 						"parameters": {
-							"parquetPath": "@pipeline().parameters.TargetADLSStore"
+							"textPath": "@pipeline().parameters.TargetADLSStore"
 						}
 					}
 				]

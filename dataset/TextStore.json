@@ -1,0 +1,31 @@
+{
+	"name": "TextStore",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ADLSData",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"textPath": {
+				"type": "string",
+				"defaultValue": "@pipeline().parameters.TargetADLSStore"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": {
+					"value": "@dataset().textPath",
+					"type": "Expression"
+				}
+			},
+			"columnDelimiter": "|",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
