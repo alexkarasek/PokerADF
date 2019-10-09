@@ -30,10 +30,10 @@
 			"value": "https://akpshhdatalake.dfs.core.windows.net"
 		},
 		"FileServer1_properties_typeProperties_host": {
-			"value": "C:\\Users\\alkarase"
+			"value": "C:\\Users\\akdev01_admin"
 		},
 		"FileServer1_properties_typeProperties_userId": {
-			"value": "NorthAmerica\\alkarase"
+			"value": "akdev01_admin"
 		},
 		"HttpServer1_properties_typeProperties_url": {
 			"value": "https://google.com"

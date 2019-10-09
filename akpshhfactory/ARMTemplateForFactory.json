@@ -9,17 +9,17 @@
 		},
 		"integrationRuntime_akdev01": {
 			"type": "string",
-			"metadata": "Integration Runtime name",
+			"metadata": "Integration runtime name",
 			"defaultValue": "akdev01"
 		},
 		"integrationRuntime_integrationRuntime2": {
 			"type": "string",
-			"metadata": "Integration Runtime name",
+			"metadata": "Integration runtime name",
 			"defaultValue": "integrationRuntime2"
 		},
 		"integrationRuntime_integrationRuntime3": {
 			"type": "string",
-			"metadata": "Integration Runtime name",
+			"metadata": "Integration runtime name",
 			"defaultValue": "integrationRuntime3"
 		},
 		"ADLSData_accountKey": {
@@ -44,11 +44,11 @@
 		},
 		"FileServer1_properties_typeProperties_host": {
 			"type": "string",
-			"defaultValue": "C:\\Users\\alkarase"
+			"defaultValue": "C:\\Users\\akdev01_admin"
 		},
 		"FileServer1_properties_typeProperties_userId": {
 			"type": "string",
-			"defaultValue": "NorthAmerica\\alkarase"
+			"defaultValue": "akdev01_admin"
 		},
 		"HttpServer1_properties_typeProperties_url": {
 			"type": "string",
@@ -155,13 +155,15 @@
 								"storeSettings": {
 									"type": "AzureBlobFSReadSettings",
 									"recursive": true,
-									"wildcardFileName": "*.json"
+									"wildcardFileName": "*.json",
+									"enablePartitionDiscovery": false
 								}
 							},
 							"sink": {
 								"type": "ParquetSink",
 								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
+									"type": "AzureBlobFSWriteSettings",
+									"copyBehavior": "MergeFiles"
 								}
 							},
 							"enableStaging": false,
@@ -173,7 +175,7 @@
 											"path": "$['id']"
 										},
 										"sink": {
-											"name": "id"
+											"ordinal": 1
 										}
 									},
 									{
@@ -181,7 +183,7 @@
 											"path": "$['timestamp']"
 										},
 										"sink": {
-											"name": "timestamp"
+											"ordinal": 2
 										}
 									},
 									{
@@ -189,7 +191,7 @@
 											"path": "$['sitename']"
 										},
 										"sink": {
-											"name": "sitename"
+											"ordinal": 3
 										}
 									},
 									{
@@ -197,7 +199,7 @@
 											"path": "$['tablename']"
 										},
 										"sink": {
-											"name": "tablename"
+											"ordinal": 4
 										}
 									},
 									{
@@ -205,7 +207,7 @@
 											"path": "$['limits']"
 										},
 										"sink": {
-											"name": "limits"
+											"ordinal": 5
 										}
 									},
 									{
@@ -213,57 +215,60 @@
 											"path": "$['buttonseat']"
 										},
 										"sink": {
-											"name": "buttonseat"
+											"ordinal": 6
 										}
 									},
 									{
 										"source": {
-											"path": "$['actions'][0]['GameActionId']"
+											"path": "[['GameActionId']"
 										},
 										"sink": {
-											"name": "GameActionId"
+											"ordinal": 7
 										}
 									},
 									{
 										"source": {
-											"path": "$['actions'][0]['streetname']"
+											"path": "[['streetname']"
 										},
 										"sink": {
-											"name": "streetname"
+											"ordinal": 8
 										}
 									},
 									{
 										"source": {
-											"path": "$['actions'][0]['action']"
+											"path": "[['action']"
 										},
 										"sink": {
-											"name": "action"
+											"ordinal": 9
 										}
 									},
 									{
 										"source": {
-											"path": "$['actions'][0]['actor']"
+											"path": "[['actor']"
 										},
 										"sink": {
-											"name": "actor"
+											"ordinal": 10
 										}
 									},
 									{
 										"source": {
-											"path": "$['actions'][0]['amount']"
+											"path": "[['amount']"
 										},
 										"sink": {
-											"name": "amount"
+											"ordinal": 11
 										}
 									}
-								]
+								],
+								"collectionReference": "$['actions']"
 							}
 						},
 						"inputs": [
 							{
 								"referenceName": "JSONStore",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"jsonPath": "@pipeline().parameters.RawJSONStore"
+								}
 							}
 						],
 						"outputs": [
@@ -386,6 +391,33 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/RdyFile')]",
 				"[concat(variables('factoryId'), '/pipelines/CopyDataFromLocalToADLS')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DebugTarget')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ADLSData",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "Data/Test/Debug",
+						"fileSystem": "gamedata"
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ADLSData')]"
 			]
 		},
 		{
@@ -685,12 +717,12 @@
 					}
 				},
 				"connectVia": {
-					"referenceName": "[parameters('integrationRuntime_integrationRuntime2')]",
+					"referenceName": "[parameters('integrationRuntime_integrationRuntime3')]",
 					"type": "IntegrationRuntimeReference"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/', parameters('integrationRuntime_integrationRuntime2'))]"
+				"[concat(variables('factoryId'), '/integrationRuntimes/', parameters('integrationRuntime_integrationRuntime3'))]"
 			]
 		},
 		{

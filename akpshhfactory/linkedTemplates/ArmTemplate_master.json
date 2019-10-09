@@ -9,17 +9,17 @@
 		},
 		"integrationRuntime_akdev01": {
 			"type": "string",
-			"metadata": "Integration Runtime name",
+			"metadata": "Integration runtime name",
 			"defaultValue": "akdev01"
 		},
 		"integrationRuntime_integrationRuntime2": {
 			"type": "string",
-			"metadata": "Integration Runtime name",
+			"metadata": "Integration runtime name",
 			"defaultValue": "integrationRuntime2"
 		},
 		"integrationRuntime_integrationRuntime3": {
 			"type": "string",
-			"metadata": "Integration Runtime name",
+			"metadata": "Integration runtime name",
 			"defaultValue": "integrationRuntime3"
 		},
 		"ADLSData_accountKey": {
@@ -44,11 +44,11 @@
 		},
 		"FileServer1_properties_typeProperties_host": {
 			"type": "string",
-			"defaultValue": "C:\\Users\\alkarase"
+			"defaultValue": "C:\\Users\\akdev01_admin"
 		},
 		"FileServer1_properties_typeProperties_userId": {
 			"type": "string",
-			"defaultValue": "NorthAmerica\\alkarase"
+			"defaultValue": "akdev01_admin"
 		},
 		"HttpServer1_properties_typeProperties_url": {
 			"type": "string",
