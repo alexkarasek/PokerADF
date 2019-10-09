@@ -131,7 +131,7 @@
 						]
 					},
 					{
-						"name": "Copy_JSON_to_Parquet",
+						"name": "Copy_JSON_to_ADLSStruct",
 						"type": "Copy",
 						"dependsOn": [
 							{
@@ -160,13 +160,24 @@
 								}
 							},
 							"sink": {
-								"type": "ParquetSink",
+								"type": "DelimitedTextSink",
 								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings",
-									"copyBehavior": "MergeFiles"
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
 								}
 							},
-							"enableStaging": false,
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "BlobSrc",
+									"type": "LinkedServiceReference"
+								},
+								"path": "adfstagedpolybasetempdata"
+							},
 							"translator": {
 								"type": "TabularTranslator",
 								"mappings": [
@@ -273,10 +284,10 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "ParquetStore",
+								"referenceName": "TextStore",
 								"type": "DatasetReference",
 								"parameters": {
-									"parquetPath": "@pipeline().parameters.TargetADLSStore"
+									"textPath": "@pipeline().parameters.TargetADLSStore"
 								}
 							}
 						]
@@ -306,7 +317,8 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/LocalSrc')]",
 				"[concat(variables('factoryId'), '/datasets/JSONStore')]",
-				"[concat(variables('factoryId'), '/datasets/ParquetStore')]"
+				"[concat(variables('factoryId'), '/datasets/TextStore')]",
+				"[concat(variables('factoryId'), '/linkedServices/BlobSrc')]"
 			]
 		},
 		{
@@ -669,6 +681,42 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/SQLDW')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TextStore')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ADLSData",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"textPath": {
+						"type": "string",
+						"defaultValue": "@pipeline().parameters.TargetADLSStore"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": {
+							"value": "@dataset().textPath",
+							"type": "Expression"
+						}
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ADLSData')]"
 			]
 		},
 		{
