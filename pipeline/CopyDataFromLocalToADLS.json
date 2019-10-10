@@ -83,14 +83,10 @@
 						}
 					},
 					"sink": {
-						"type": "DelimitedTextSink",
+						"type": "ParquetSink",
 						"storeSettings": {
-							"type": "AzureBlobFSWriteSettings"
-						},
-						"formatSettings": {
-							"type": "DelimitedTextWriteSettings",
-							"quoteAllText": true,
-							"fileExtension": ".txt"
+							"type": "AzureBlobFSWriteSettings",
+							"copyBehavior": "MergeFiles"
 						}
 					},
 					"enableStaging": false,
@@ -200,10 +196,10 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "TextStore",
+						"referenceName": "ParquetStore",
 						"type": "DatasetReference",
 						"parameters": {
-							"textPath": "@pipeline().parameters.TargetADLSStore"
+							"parquetPath": "@pipeline().parameters.TargetADLSStore"
 						}
 					}
 				]
