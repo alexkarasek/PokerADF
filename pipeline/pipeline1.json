@@ -176,6 +176,12 @@
 				]
 			}
 		],
+		"parameters": {
+			"TargetADLSStore": {
+				"type": "string",
+				"defaultValue": "gamedata\\Data\\Struct\\Sample"
+			}
+		},
 		"annotations": []
 	}
 }
