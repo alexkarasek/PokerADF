@@ -5,12 +5,6 @@
 			"referenceName": "ADLSData",
 			"type": "LinkedServiceReference"
 		},
-		"parameters": {
-			"textPath": {
-				"type": "string",
-				"defaultValue": "@pipeline().parameters.TargetADLSStore"
-			}
-		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
