@@ -162,10 +162,7 @@
 				"inputs": [
 					{
 						"referenceName": "DelimitedText1",
-						"type": "DatasetReference",
-						"parameters": {
-							"textPath": "@pipeline().parameters.TargetADLSStore"
-						}
+						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
@@ -176,12 +173,6 @@
 				]
 			}
 		],
-		"parameters": {
-			"TargetADLSStore": {
-				"type": "string",
-				"defaultValue": "gamedata\\Data\\Struct\\Sample"
-			}
-		},
 		"annotations": []
 	}
 }
