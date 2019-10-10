@@ -35,7 +35,14 @@
 							"useTypeDefault": true
 						}
 					},
-					"enableStaging": false,
+					"enableStaging": true,
+					"stagingSettings": {
+						"linkedServiceName": {
+							"referenceName": "BlobSrc",
+							"type": "LinkedServiceReference"
+						},
+						"path": "adfstagedpolybasetempdata"
+					},
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
