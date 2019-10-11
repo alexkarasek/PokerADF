@@ -17,6 +17,87 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/SetParams')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Lookup params",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"wildcardFileName": "*.*"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"dataset": {
+								"referenceName": "RdyFile",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "start Import",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Lookup params",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "CopyDataFromLocalToADLS",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"localdir": {
+									"value": "@{activity('Lookup params').output.FirstRow.Prop_0}",
+									"type": "Expression"
+								},
+								"RawJSONStore": {
+									"value": "@{activity('Lookup params').output.FirstRow.Prop_1}",
+									"type": "Expression"
+								},
+								"TargetADLSStore": {
+									"value": "@{activity('Lookup params').output.FirstRow.Prop_2}",
+									"type": "Expression"
+								}
+							}
+						}
+					}
+				],
+				"variables": {
+					"blobpath": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AzDev01Trigger')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
