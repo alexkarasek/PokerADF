@@ -103,7 +103,7 @@
 							},
 							{
 								"source": {
-									"name": "timestamp",
+									"name": "GameActionId",
 									"type": "String"
 								},
 								"sink": {
