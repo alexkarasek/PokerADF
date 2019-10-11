@@ -16,13 +16,59 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileSystem": {
-					"value": "@dataset().parquetPath",
-					"type": "Expression"
-				}
+				"fileName": "data_6d58d14a-bfcb-458b-87d0-2ecceaa37389_fde3b24b-31cd-455f-a1db-db1a25eaa69c.parquet",
+				"folderPath": "Data/Struct/20190619/Parquet",
+				"fileSystem": "gamedata"
 			},
 			"compressionCodec": "snappy"
 		},
-		"schema": []
+		"schema": [
+			{
+				"name": "GameActionId",
+				"type": "INT32"
+			},
+			{
+				"name": "streetname",
+				"type": "UTF8"
+			},
+			{
+				"name": "action",
+				"type": "UTF8"
+			},
+			{
+				"name": "actor",
+				"type": "UTF8"
+			},
+			{
+				"name": "amount",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "id",
+				"type": "INT64"
+			},
+			{
+				"name": "timestamp",
+				"type": "UTF8"
+			},
+			{
+				"name": "sitename",
+				"type": "UTF8"
+			},
+			{
+				"name": "tablename",
+				"type": "UTF8"
+			},
+			{
+				"name": "limits",
+				"type": "UTF8"
+			},
+			{
+				"name": "butttonseat",
+				"type": "INT64"
+			}
+		]
 	}
 }
