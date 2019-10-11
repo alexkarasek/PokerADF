@@ -203,12 +203,6 @@
 						}
 					}
 				]
-			},
-			{
-				"name": "If Condition1",
-				"type": "IfCondition",
-				"dependsOn": [],
-				"userProperties": []
 			}
 		],
 		"parameters": {
@@ -223,14 +217,6 @@
 			"TargetADLSStore": {
 				"type": "string",
 				"defaultValue": "gamedata\\Data\\Struct\\Text\\20190619"
-			},
-			"isLocalToBlobEnabled": {
-				"type": "bool",
-				"defaultValue": false
-			},
-			"isJSONToADLSStruct": {
-				"type": "bool",
-				"defaultValue": true
 			}
 		},
 		"variables": {
