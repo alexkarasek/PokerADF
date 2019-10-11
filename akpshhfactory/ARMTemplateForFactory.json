@@ -1112,58 +1112,11 @@
 								"mappings": [
 									{
 										"source": {
-											"path": "$['id']"
-										},
-										"sink": {
-											"ordinal": 1
-										}
-									},
-									{
-										"source": {
-											"path": "$['timestamp']"
-										},
-										"sink": {
-											"ordinal": 2
-										}
-									},
-									{
-										"source": {
-											"path": "$['sitename']"
-										},
-										"sink": {
-											"ordinal": 3
-										}
-									},
-									{
-										"source": {
-											"path": "$['tablename']"
-										},
-										"sink": {
-											"ordinal": 4
-										}
-									},
-									{
-										"source": {
-											"path": "$['limits']"
-										},
-										"sink": {
-											"ordinal": 5
-										}
-									},
-									{
-										"source": {
-											"path": "$['buttonseat']"
-										},
-										"sink": {
-											"ordinal": 6
-										}
-									},
-									{
-										"source": {
 											"path": "[['GameActionId']"
 										},
 										"sink": {
-											"ordinal": 7
+											"name": "GameActionId",
+											"type": "Int32"
 										}
 									},
 									{
@@ -1171,7 +1124,8 @@
 											"path": "[['streetname']"
 										},
 										"sink": {
-											"ordinal": 8
+											"name": "streetname",
+											"type": "String"
 										}
 									},
 									{
@@ -1179,7 +1133,8 @@
 											"path": "[['action']"
 										},
 										"sink": {
-											"ordinal": 9
+											"name": "action",
+											"type": "String"
 										}
 									},
 									{
@@ -1187,7 +1142,8 @@
 											"path": "[['actor']"
 										},
 										"sink": {
-											"ordinal": 10
+											"name": "actor",
+											"type": "String"
 										}
 									},
 									{
@@ -1195,7 +1151,62 @@
 											"path": "[['amount']"
 										},
 										"sink": {
-											"ordinal": 11
+											"name": "amount",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['id']"
+										},
+										"sink": {
+											"name": "id",
+											"type": "Int64"
+										}
+									},
+									{
+										"source": {
+											"path": "$['timestamp']"
+										},
+										"sink": {
+											"name": "timestamp",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sitename']"
+										},
+										"sink": {
+											"name": "sitename",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['tablename']"
+										},
+										"sink": {
+											"name": "tablename",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['limits']"
+										},
+										"sink": {
+											"name": "limits",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['buttonseat']"
+										},
+										"sink": {
+											"name": "butttonseat",
+											"type": "Int64"
 										}
 									}
 								],
@@ -1229,7 +1240,7 @@
 					},
 					"TargetADLSStore": {
 						"type": "string",
-						"defaultValue": "gamedata\\Data\\Struct\\Text2\\20190619"
+						"defaultValue": "gamedata\\Data\\Struct\\20190619\\Text2"
 					}
 				},
 				"variables": {
