@@ -16,9 +16,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "data_6d58d14a-bfcb-458b-87d0-2ecceaa37389_fde3b24b-31cd-455f-a1db-db1a25eaa69c.parquet",
-				"folderPath": "Data/Struct/20190619/Parquet",
-				"fileSystem": "gamedata"
+				"fileSystem": {
+					"value": "@dataset().parquetPath",
+					"type": "Expression"
+				}
 			},
 			"compressionCodec": "snappy"
 		},
