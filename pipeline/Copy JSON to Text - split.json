@@ -169,7 +169,7 @@
 			},
 			"TargetADLSStore": {
 				"type": "string",
-				"defaultValue": "gamedata\\Data\\Struct\\Text2\\20190619"
+				"defaultValue": "gamedata\\Data\\Struct\\20190619\\Text2"
 			}
 		},
 		"variables": {
