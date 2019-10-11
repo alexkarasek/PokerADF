@@ -471,10 +471,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileSystem": {
-							"value": "@dataset().textPath",
-							"type": "Expression"
-						}
+						"folderPath": "Data/Struct/20190619/Text2"
 					},
 					"columnDelimiter": "|",
 					"escapeChar": "",
