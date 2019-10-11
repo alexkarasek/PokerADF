@@ -2027,6 +2027,202 @@
 				"typeProperties": {}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Clone merged Parquet to DW')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy_ADLSStruct_to_DW",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ParquetSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"wildcardFileName": "*.*",
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "SqlDWSink",
+								"allowPolyBase": true,
+								"preCopyScript": "  drop table stg.hh\n\n    CREATE TABLE [stg].[HH] (\n        id varchar(20),\n    [timestamp] varchar(50),\n    sitename varchar(50),\n    tablename varchar(100),\n    limits varchar(50),\n    buttonseat bigint,\n    gameactionid bigint,\n    streetname varchar(100),\n    action varchar(20),\n    actor varchar(100),\n    amount float\n    )\nWITH  \n  (   \n   DISTRIBUTION = ROUND_ROBIN\n  )  ",
+								"polyBaseSettings": {
+									"rejectValue": 0,
+									"rejectType": "value",
+									"useTypeDefault": true
+								},
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "id",
+											"type": "Int64"
+										},
+										"sink": {
+											"name": "id",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "timestamp",
+											"type": "String"
+										},
+										"sink": {
+											"name": "timestamp",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "sitename",
+											"type": "String"
+										},
+										"sink": {
+											"name": "sitename",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "tablename",
+											"type": "String"
+										},
+										"sink": {
+											"name": "tablename",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "limits",
+											"type": "String"
+										},
+										"sink": {
+											"name": "limits",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "butttonseat",
+											"type": "Int64"
+										},
+										"sink": {
+											"name": "buttonseat",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "GameActionId",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "gameactionid",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "streetname",
+											"type": "String"
+										},
+										"sink": {
+											"name": "streetname",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "action",
+											"type": "String"
+										},
+										"sink": {
+											"name": "action",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "actor",
+											"type": "String"
+										},
+										"sink": {
+											"name": "actor",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "amount",
+											"type": "Decimal"
+										},
+										"sink": {
+											"name": "amount",
+											"type": "Decimal"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ParquetStore",
+								"type": "DatasetReference",
+								"parameters": {
+									"parquetPath": "@pipeline().parameters.TargetADLSStore"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SQLDW_Sink",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"parameters": {
+					"RawJSONStore": {
+						"type": "string",
+						"defaultValue": "gamedata\\Data\\Raw\\20190619"
+					},
+					"TargetADLSStore": {
+						"type": "string",
+						"defaultValue": "gamedata\\Data\\Struct\\20190619\\Text2"
+					}
+				},
+				"variables": {
+					"boblpath": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ParquetStore')]",
+				"[concat(variables('factoryId'), '/datasets/SQLDW_Sink')]"
+			]
 		}
 	]
 }
