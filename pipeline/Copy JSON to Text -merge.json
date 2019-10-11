@@ -1,5 +1,5 @@
 {
-	"name": "Copy JSON to Text",
+	"name": "Copy JSON to Text -merge",
 	"properties": {
 		"activities": [
 			{
