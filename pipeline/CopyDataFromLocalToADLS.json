@@ -212,11 +212,11 @@
 			},
 			"RawJSONStore": {
 				"type": "string",
-				"defaultValue": "gamedata\\Data\\Raw\\Sample"
+				"defaultValue": "gamedata\\Data\\Raw\\20190619"
 			},
 			"TargetADLSStore": {
 				"type": "string",
-				"defaultValue": "gamedata\\Data\\Struct\\Sample"
+				"defaultValue": "gamedata\\Data\\Struct\\Text\\20190619"
 			}
 		},
 		"variables": {
