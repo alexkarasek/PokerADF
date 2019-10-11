@@ -61,10 +61,6 @@
 		"FileServer1_properties_typeProperties_userId": {
 			"type": "string",
 			"defaultValue": "akdev01_admin"
-		},
-		"AzDev01Trigger_properties_typeProperties_scope": {
-			"type": "string",
-			"defaultValue": "/subscriptions/1be2307a-3f38-4358-9243-da34bdd7eb2d/resourceGroups/ak-PSHandHistory/providers/Microsoft.Storage/storageAccounts/akpshharchive"
 		}
 	},
 	"variables": {
@@ -481,9 +477,9 @@
 						}
 					},
 					"columnDelimiter": "|",
-					"escapeChar": "\\",
+					"escapeChar": "",
 					"firstRowAsHeader": true,
-					"quoteChar": "\""
+					"quoteChar": ""
 				},
 				"schema": []
 			},
@@ -513,6 +509,184 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/integrationRuntimes/', parameters('integrationRuntime_integrationRuntime3'))]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Copy JSON to Text')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy_JSON_to_ADLSStruct",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"wildcardFileName": "*.json",
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings",
+									"copyBehavior": "MergeFiles"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['id']"
+										},
+										"sink": {
+											"ordinal": 1
+										}
+									},
+									{
+										"source": {
+											"path": "$['timestamp']"
+										},
+										"sink": {
+											"ordinal": 2
+										}
+									},
+									{
+										"source": {
+											"path": "$['sitename']"
+										},
+										"sink": {
+											"ordinal": 3
+										}
+									},
+									{
+										"source": {
+											"path": "$['tablename']"
+										},
+										"sink": {
+											"ordinal": 4
+										}
+									},
+									{
+										"source": {
+											"path": "$['limits']"
+										},
+										"sink": {
+											"ordinal": 5
+										}
+									},
+									{
+										"source": {
+											"path": "$['buttonseat']"
+										},
+										"sink": {
+											"ordinal": 6
+										}
+									},
+									{
+										"source": {
+											"path": "[['GameActionId']"
+										},
+										"sink": {
+											"ordinal": 7
+										}
+									},
+									{
+										"source": {
+											"path": "[['streetname']"
+										},
+										"sink": {
+											"ordinal": 8
+										}
+									},
+									{
+										"source": {
+											"path": "[['action']"
+										},
+										"sink": {
+											"ordinal": 9
+										}
+									},
+									{
+										"source": {
+											"path": "[['actor']"
+										},
+										"sink": {
+											"ordinal": 10
+										}
+									},
+									{
+										"source": {
+											"path": "[['amount']"
+										},
+										"sink": {
+											"ordinal": 11
+										}
+									}
+								],
+								"collectionReference": "$['actions']"
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "JSONStore",
+								"type": "DatasetReference",
+								"parameters": {
+									"jsonPath": "@pipeline().parameters.RawJSONStore"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "TextStore",
+								"type": "DatasetReference",
+								"parameters": {
+									"textPath": "@pipeline().parameters.TargetADLSStore"
+								}
+							}
+						]
+					}
+				],
+				"parameters": {
+					"RawJSONStore": {
+						"type": "string",
+						"defaultValue": "gamedata\\Data\\Raw\\20190619"
+					},
+					"TargetADLSStore": {
+						"type": "string",
+						"defaultValue": "gamedata\\Data\\Struct\\Text\\20190619"
+					}
+				},
+				"variables": {
+					"boblpath": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/JSONStore')]",
+				"[concat(variables('factoryId'), '/datasets/TextStore')]"
 			]
 		},
 		{
@@ -755,11 +929,11 @@
 					},
 					"RawJSONStore": {
 						"type": "string",
-						"defaultValue": "gamedata\\Data\\Raw\\Sample"
+						"defaultValue": "gamedata\\Data\\Raw\\20190619"
 					},
 					"TargetADLSStore": {
 						"type": "string",
-						"defaultValue": "gamedata\\Data\\Struct\\Sample"
+						"defaultValue": "gamedata\\Data\\Struct\\Text\\20190619"
 					}
 				},
 				"variables": {
@@ -856,36 +1030,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/RdyFile')]",
-				"[concat(variables('factoryId'), '/pipelines/CopyDataFromLocalToADLS')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzDev01Trigger')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Stopped",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "CopyDataFromLocalToADLS",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "BlobEventsTrigger",
-				"typeProperties": {
-					"blobPathBeginsWith": "/pshharchive/blobs/",
-					"blobPathEndsWith": "Flags/azdev01.rdy",
-					"scope": "[parameters('AzDev01Trigger_properties_typeProperties_scope')]",
-					"events": [
-						"Microsoft.Storage.BlobCreated"
-					]
-				}
-			},
-			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/CopyDataFromLocalToADLS')]"
 			]
 		}
