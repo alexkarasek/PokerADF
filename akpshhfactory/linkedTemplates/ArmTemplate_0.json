@@ -911,75 +911,15 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/CopyDataFromLocalToADLS')]",
+			"name": "[concat(parameters('factoryName'), '/Copy JSON to Parquet - split')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Copy_Local_to_Blobs",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "JsonSource",
-								"storeSettings": {
-									"type": "FileServerReadSettings",
-									"recursive": true,
-									"wildcardFolderPath": {
-										"value": "@{pipeline().parameters.localdir}",
-										"type": "Expression"
-									},
-									"wildcardFileName": "*.json",
-									"enablePartitionDiscovery": false
-								}
-							},
-							"sink": {
-								"type": "JsonSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "JsonWriteSettings",
-									"quoteAllText": true
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "LocalSrc",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "JSONStore",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
 						"name": "Copy_JSON_to_ADLSStruct",
 						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "Copy_Local_to_Blobs",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
+						"dependsOn": [],
 						"policy": {
 							"timeout": "7.00:00:00",
 							"retry": 0,
@@ -1001,8 +941,7 @@
 							"sink": {
 								"type": "ParquetSink",
 								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings",
-									"copyBehavior": "MergeFiles"
+									"type": "AzureBlobFSWriteSettings"
 								}
 							},
 							"enableStaging": false,
@@ -1011,58 +950,11 @@
 								"mappings": [
 									{
 										"source": {
-											"path": "$['id']"
-										},
-										"sink": {
-											"ordinal": 1
-										}
-									},
-									{
-										"source": {
-											"path": "$['timestamp']"
-										},
-										"sink": {
-											"ordinal": 2
-										}
-									},
-									{
-										"source": {
-											"path": "$['sitename']"
-										},
-										"sink": {
-											"ordinal": 3
-										}
-									},
-									{
-										"source": {
-											"path": "$['tablename']"
-										},
-										"sink": {
-											"ordinal": 4
-										}
-									},
-									{
-										"source": {
-											"path": "$['limits']"
-										},
-										"sink": {
-											"ordinal": 5
-										}
-									},
-									{
-										"source": {
-											"path": "$['buttonseat']"
-										},
-										"sink": {
-											"ordinal": 6
-										}
-									},
-									{
-										"source": {
 											"path": "[['GameActionId']"
 										},
 										"sink": {
-											"ordinal": 7
+											"name": "GameActionId",
+											"type": "Int32"
 										}
 									},
 									{
@@ -1070,7 +962,8 @@
 											"path": "[['streetname']"
 										},
 										"sink": {
-											"ordinal": 8
+											"name": "streetname",
+											"type": "String"
 										}
 									},
 									{
@@ -1078,7 +971,8 @@
 											"path": "[['action']"
 										},
 										"sink": {
-											"ordinal": 9
+											"name": "action",
+											"type": "String"
 										}
 									},
 									{
@@ -1086,7 +980,8 @@
 											"path": "[['actor']"
 										},
 										"sink": {
-											"ordinal": 10
+											"name": "actor",
+											"type": "String"
 										}
 									},
 									{
@@ -1094,7 +989,62 @@
 											"path": "[['amount']"
 										},
 										"sink": {
-											"ordinal": 11
+											"name": "amount",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['id']"
+										},
+										"sink": {
+											"name": "id",
+											"type": "Int64"
+										}
+									},
+									{
+										"source": {
+											"path": "$['timestamp']"
+										},
+										"sink": {
+											"name": "timestamp",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sitename']"
+										},
+										"sink": {
+											"name": "sitename",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['tablename']"
+										},
+										"sink": {
+											"name": "tablename",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['limits']"
+										},
+										"sink": {
+											"name": "limits",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['buttonseat']"
+										},
+										"sink": {
+											"name": "butttonseat",
+											"type": "Int64"
 										}
 									}
 								],
@@ -1122,17 +1072,13 @@
 					}
 				],
 				"parameters": {
-					"localdir": {
-						"type": "string",
-						"defaultValue": "blah"
-					},
 					"RawJSONStore": {
 						"type": "string",
 						"defaultValue": "gamedata\\Data\\Raw\\20190619"
 					},
 					"TargetADLSStore": {
 						"type": "string",
-						"defaultValue": "gamedata\\Data\\Struct\\Text\\20190619"
+						"defaultValue": "gamedata\\Data\\Struct\\20190619\\Parquet2"
 					}
 				},
 				"variables": {
@@ -1143,7 +1089,6 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/LocalSrc')]",
 				"[concat(variables('factoryId'), '/datasets/JSONStore')]",
 				"[concat(variables('factoryId'), '/datasets/ParquetStore')]"
 			]
