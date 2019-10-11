@@ -20,7 +20,8 @@
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
 							"recursive": true,
-							"wildcardFileName": "*.parquet"
+							"wildcardFileName": "*.*",
+							"enablePartitionDiscovery": false
 						}
 					},
 					"sink": {
