@@ -1802,7 +1802,7 @@
 				],
 				"typeProperties": {
 					"schema": "stg",
-					"table": "HH_Stage"
+					"table": "HH"
 				}
 			},
 			"dependsOn": [
