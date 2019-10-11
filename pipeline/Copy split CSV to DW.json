@@ -93,7 +93,7 @@
 							},
 							{
 								"source": {
-									"name": "id",
+									"name": "butttonseat",
 									"type": "String"
 								},
 								"sink": {
