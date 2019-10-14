@@ -16,10 +16,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileSystem": {
-					"value": "@dataset().parquetPath",
-					"type": "Expression"
-				}
+				"folderPath": "Data/Test/Struct/Sample2",
+				"fileSystem": "gamedata"
 			},
 			"compressionCodec": "snappy"
 		},
