@@ -10,6 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
+				"fileName": "*.parquet",
 				"folderPath": "Data/Test/Struct/Sample2",
 				"fileSystem": "gamedata"
 			},
