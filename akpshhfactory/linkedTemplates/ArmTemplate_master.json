@@ -34,6 +34,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'FileServer1'"
 		},
+		"JSON_zipped_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'JSON_zipped'"
+		},
 		"SQLDW_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'SQLDW'"
@@ -53,6 +57,10 @@
 		"HttpServer1_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://google.com"
+		},
+		"JSON_zipped_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://akpshhdatalake.dfs.core.windows.net"
 		},
 		"AzDev01Trigger_properties_typeProperties_scope": {
 			"type": "string",
@@ -108,11 +116,11 @@
 					"BlobSrc_connectionString": {
 						"value": "[parameters('BlobSrc_connectionString')]"
 					},
+					"JSON_zipped_accountKey": {
+						"value": "[parameters('JSON_zipped_accountKey')]"
+					},
 					"SQLDW_connectionString": {
 						"value": "[parameters('SQLDW_connectionString')]"
-					},
-					"FileServer1_password": {
-						"value": "[parameters('FileServer1_password')]"
 					},
 					"ADLSData_properties_typeProperties_url": {
 						"value": "[parameters('ADLSData_properties_typeProperties_url')]"
@@ -120,17 +128,14 @@
 					"HttpServer1_properties_typeProperties_url": {
 						"value": "[parameters('HttpServer1_properties_typeProperties_url')]"
 					},
+					"JSON_zipped_properties_typeProperties_url": {
+						"value": "[parameters('JSON_zipped_properties_typeProperties_url')]"
+					},
 					"EventTrigger_properties_typeProperties_scope": {
 						"value": "[parameters('EventTrigger_properties_typeProperties_scope')]"
 					},
 					"trigger1_properties_typeProperties_scope": {
 						"value": "[parameters('trigger1_properties_typeProperties_scope')]"
-					},
-					"FileServer1_properties_typeProperties_host": {
-						"value": "[parameters('FileServer1_properties_typeProperties_host')]"
-					},
-					"FileServer1_properties_typeProperties_userId": {
-						"value": "[parameters('FileServer1_properties_typeProperties_userId')]"
 					}
 				}
 			},
@@ -149,6 +154,15 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"FileServer1_password": {
+						"value": "[parameters('FileServer1_password')]"
+					},
+					"FileServer1_properties_typeProperties_host": {
+						"value": "[parameters('FileServer1_properties_typeProperties_host')]"
+					},
+					"FileServer1_properties_typeProperties_userId": {
+						"value": "[parameters('FileServer1_properties_typeProperties_userId')]"
 					},
 					"AzDev01Trigger_properties_typeProperties_scope": {
 						"value": "[parameters('AzDev01Trigger_properties_typeProperties_scope')]"

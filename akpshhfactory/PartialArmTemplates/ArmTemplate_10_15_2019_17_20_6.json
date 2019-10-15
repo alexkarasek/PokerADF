@@ -1,0 +1,346 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "akpshhfactory"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy_JSON_to_ADLSStruct",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "[['GameActionId']"
+										},
+										"sink": {
+											"name": "GameActionId",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "[['streetname']"
+										},
+										"sink": {
+											"name": "streetname",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['action']"
+										},
+										"sink": {
+											"name": "action",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['actor']"
+										},
+										"sink": {
+											"name": "actor",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['amount']"
+										},
+										"sink": {
+											"name": "amount",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['id']"
+										},
+										"sink": {
+											"name": "id",
+											"type": "Int64"
+										}
+									},
+									{
+										"source": {
+											"path": "$['timestamp']"
+										},
+										"sink": {
+											"name": "timestamp",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sitename']"
+										},
+										"sink": {
+											"name": "sitename",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['tablename']"
+										},
+										"sink": {
+											"name": "tablename",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['limits']"
+										},
+										"sink": {
+											"name": "limits",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['buttonseat']"
+										},
+										"sink": {
+											"name": "butttonseat",
+											"type": "Int64"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Binary1",
+								"type": "DatasetReference"
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Binary2",
+								"type": "DatasetReference"
+							}
+						]
+					}
+				],
+				"parameters": {
+					"RawJSONStore": {
+						"type": "string",
+						"defaultValue": "gamedata\\Data\\Raw\\20190619"
+					},
+					"TargetADLSStore": {
+						"type": "string",
+						"defaultValue": "gamedata\\Data\\Struct\\20190619\\Text2"
+					}
+				},
+				"variables": {
+					"boblpath": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Binary1')]",
+				"[concat(variables('factoryId'), '/datasets/Binary2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Binary1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "JSON_zipped",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "2019-06-19.zip",
+						"folderPath": "Data/Raw",
+						"fileSystem": "gamedata"
+					},
+					"compression": {
+						"type": "deflate",
+						"level": "Fastest"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Binary2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "JSON_zipped",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "Data/Test/Struct/Sample3",
+						"fileSystem": "gamedata"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Json1_compressed')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "JSON_zipped",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "2019-06-19.zip",
+						"folderPath": "Data/Raw",
+						"fileSystem": "gamedata"
+					},
+					"compression": {
+						"type": "deflate"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"timestamp": {
+							"type": "string"
+						},
+						"sitename": {
+							"type": "string"
+						},
+						"tablename": {
+							"type": "string"
+						},
+						"limits": {
+							"type": "string"
+						},
+						"buttonseat": {
+							"type": "integer"
+						},
+						"seats": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"playername": {
+										"type": "string"
+									},
+									"seatno": {
+										"type": "integer"
+									},
+									"position": {
+										"type": "null"
+									}
+								}
+							}
+						},
+						"actions": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"GameActionId": {
+										"type": "integer"
+									},
+									"streetname": {
+										"type": "string"
+									},
+									"action": {
+										"type": "string"
+									},
+									"actor": {
+										"type": "string"
+									},
+									"amount": {
+										"type": "number"
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Json1_unzipped')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "JSON_zipped",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "Data/Test/Struct/Sample3",
+						"fileSystem": "gamedata"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

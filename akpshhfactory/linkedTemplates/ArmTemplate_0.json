@@ -30,13 +30,13 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'BlobSrc'"
 		},
+		"JSON_zipped_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'JSON_zipped'"
+		},
 		"SQLDW_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'SQLDW'"
-		},
-		"FileServer1_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'FileServer1'"
 		},
 		"ADLSData_properties_typeProperties_url": {
 			"type": "string",
@@ -46,6 +46,10 @@
 			"type": "string",
 			"defaultValue": "https://google.com"
 		},
+		"JSON_zipped_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://akpshhdatalake.dfs.core.windows.net"
+		},
 		"EventTrigger_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/1be2307a-3f38-4358-9243-da34bdd7eb2d/resourceGroups/ak-PSHandHistory/providers/Microsoft.Storage/storageAccounts/akpshharchive"
@@ -53,14 +57,6 @@
 		"trigger1_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/1be2307a-3f38-4358-9243-da34bdd7eb2d/resourceGroups/ak-PSHandHistory/providers/Microsoft.Storage/storageAccounts/akpshharchive"
-		},
-		"FileServer1_properties_typeProperties_host": {
-			"type": "string",
-			"defaultValue": "C:\\Users\\akdev01_admin"
-		},
-		"FileServer1_properties_typeProperties_userId": {
-			"type": "string",
-			"defaultValue": "akdev01_admin"
 		}
 	},
 	"variables": {
@@ -108,6 +104,23 @@
 					"url": "[parameters('HttpServer1_properties_typeProperties_url')]",
 					"enableServerCertificateValidation": false,
 					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/JSON_zipped')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('JSON_zipped_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('JSON_zipped_accountKey')]"
+					}
 				}
 			},
 			"dependsOn": []
@@ -194,6 +207,57 @@
 				"typeProperties": {}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Binary1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "JSON_zipped",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "2019-06-19.zip",
+						"folderPath": "Data/Raw",
+						"fileSystem": "gamedata"
+					},
+					"compression": {
+						"type": "deflate",
+						"level": "Fastest"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/JSON_zipped')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Binary2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "JSON_zipped",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "Data/Test/Struct/Sample3",
+						"fileSystem": "gamedata"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/JSON_zipped')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DebugTarget')]",
@@ -314,6 +378,120 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ADLSData')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Json1_compressed')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "JSON_zipped",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "2019-06-19.zip",
+						"folderPath": "Data/Raw",
+						"fileSystem": "gamedata"
+					},
+					"compression": {
+						"type": "deflate"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"timestamp": {
+							"type": "string"
+						},
+						"sitename": {
+							"type": "string"
+						},
+						"tablename": {
+							"type": "string"
+						},
+						"limits": {
+							"type": "string"
+						},
+						"buttonseat": {
+							"type": "integer"
+						},
+						"seats": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"playername": {
+										"type": "string"
+									},
+									"seatno": {
+										"type": "integer"
+									},
+									"position": {
+										"type": "null"
+									}
+								}
+							}
+						},
+						"actions": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"GameActionId": {
+										"type": "integer"
+									},
+									"streetname": {
+										"type": "string"
+									},
+									"action": {
+										"type": "string"
+									},
+									"actor": {
+										"type": "string"
+									},
+									"amount": {
+										"type": "number"
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/JSON_zipped')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Json1_unzipped')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "JSON_zipped",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "Data/Test/Struct/Sample3",
+						"fileSystem": "gamedata"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/JSON_zipped')]"
 			]
 		},
 		{
@@ -532,656 +710,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ADLSData')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/FileServer1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "FileServer",
-				"typeProperties": {
-					"host": "[parameters('FileServer1_properties_typeProperties_host')]",
-					"userId": "[parameters('FileServer1_properties_typeProperties_userId')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('FileServer1_password')]"
-					}
-				},
-				"connectVia": {
-					"referenceName": "[parameters('integrationRuntime_integrationRuntime3')]",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/', parameters('integrationRuntime_integrationRuntime3'))]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Clone merged Parquet to DW')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy_ADLSStruct_to_DW",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "ParquetSource",
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"wildcardFileName": "*.*",
-									"enablePartitionDiscovery": false
-								}
-							},
-							"sink": {
-								"type": "SqlDWSink",
-								"allowPolyBase": true,
-								"polyBaseSettings": {
-									"rejectValue": 0,
-									"rejectType": "value",
-									"useTypeDefault": true
-								},
-								"tableOption": "autoCreate",
-								"disableMetricsCollection": false
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "ParquetStore",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "SQLDW_Sink",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"parameters": {
-					"RawJSONStore": {
-						"type": "string",
-						"defaultValue": "gamedata\\Data\\Raw\\20190619"
-					},
-					"TargetADLSStore": {
-						"type": "string",
-						"defaultValue": "gamedata\\Data\\Struct\\20190619\\Text2"
-					}
-				},
-				"variables": {
-					"boblpath": {
-						"type": "String"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ParquetStore')]",
-				"[concat(variables('factoryId'), '/datasets/SQLDW_Sink')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Copy ADB parquet to DW')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy_ADLSStruct_to_DW",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "ParquetSource",
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"wildcardFileName": "*.*",
-									"enablePartitionDiscovery": false
-								}
-							},
-							"sink": {
-								"type": "SqlDWSink",
-								"allowPolyBase": true,
-								"polyBaseSettings": {
-									"rejectValue": 0,
-									"rejectType": "value",
-									"useTypeDefault": true
-								},
-								"tableOption": "autoCreate",
-								"disableMetricsCollection": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "GameActionId",
-											"type": "Int64"
-										},
-										"sink": {
-											"name": "gameactionid",
-											"type": "Int64"
-										}
-									},
-									{
-										"source": {
-											"name": "timestamp",
-											"type": "String"
-										},
-										"sink": {
-											"name": "timestamp",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "sitename",
-											"type": "String"
-										},
-										"sink": {
-											"name": "sitename",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "tablename",
-											"type": "String"
-										},
-										"sink": {
-											"name": "tablename",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "limits",
-											"type": "String"
-										},
-										"sink": {
-											"name": "limits",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "GameId",
-											"type": "String"
-										},
-										"sink": {
-											"name": "id",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "streetname",
-											"type": "String"
-										},
-										"sink": {
-											"name": "streetname",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "action",
-											"type": "String"
-										},
-										"sink": {
-											"name": "action",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "actor",
-											"type": "String"
-										},
-										"sink": {
-											"name": "actor",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "amount",
-											"type": "Double"
-										},
-										"sink": {
-											"name": "amount",
-											"type": "Single"
-										}
-									}
-								]
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "ParquetStore",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "SQLDW_Sink",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"parameters": {
-					"RawJSONStore": {
-						"type": "string",
-						"defaultValue": "gamedata\\Data\\Raw\\20190619"
-					},
-					"TargetADLSStore": {
-						"type": "string",
-						"defaultValue": "gamedata\\Data\\Test\\Struct\\Sample2"
-					}
-				},
-				"variables": {
-					"boblpath": {
-						"type": "String"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ParquetStore')]",
-				"[concat(variables('factoryId'), '/datasets/SQLDW_Sink')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Copy JSON to Parquet - merged')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy_JSON_to_ADLSStruct",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "JsonSource",
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"wildcardFileName": "*.json",
-									"enablePartitionDiscovery": false
-								}
-							},
-							"sink": {
-								"type": "ParquetSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings",
-									"copyBehavior": "MergeFiles"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"path": "[['GameActionId']"
-										},
-										"sink": {
-											"name": "GameActionId",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"path": "[['streetname']"
-										},
-										"sink": {
-											"name": "streetname",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "[['action']"
-										},
-										"sink": {
-											"name": "action",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "[['actor']"
-										},
-										"sink": {
-											"name": "actor",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "[['amount']"
-										},
-										"sink": {
-											"name": "amount",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['id']"
-										},
-										"sink": {
-											"name": "id",
-											"type": "Int64"
-										}
-									},
-									{
-										"source": {
-											"path": "$['timestamp']"
-										},
-										"sink": {
-											"name": "timestamp",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['sitename']"
-										},
-										"sink": {
-											"name": "sitename",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['tablename']"
-										},
-										"sink": {
-											"name": "tablename",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['limits']"
-										},
-										"sink": {
-											"name": "limits",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['buttonseat']"
-										},
-										"sink": {
-											"name": "butttonseat",
-											"type": "Int64"
-										}
-									}
-								],
-								"collectionReference": "$['actions']"
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "JSONStore",
-								"type": "DatasetReference",
-								"parameters": {
-									"jsonPath": "@pipeline().parameters.RawJSONStore"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "ParquetStore",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"parameters": {
-					"RawJSONStore": {
-						"type": "string",
-						"defaultValue": "gamedata\\Data\\Raw\\20190619"
-					},
-					"TargetADLSStore": {
-						"type": "string",
-						"defaultValue": "gamedata\\Data\\Struct\\20190619\\Parquet"
-					}
-				},
-				"variables": {
-					"boblpath": {
-						"type": "String"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/JSONStore')]",
-				"[concat(variables('factoryId'), '/datasets/ParquetStore')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Copy JSON to Parquet - split')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy_JSON_to_ADLSStruct",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "JsonSource",
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"wildcardFileName": "*.json",
-									"enablePartitionDiscovery": false
-								}
-							},
-							"sink": {
-								"type": "ParquetSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"path": "[['GameActionId']"
-										},
-										"sink": {
-											"name": "GameActionId",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"path": "[['streetname']"
-										},
-										"sink": {
-											"name": "streetname",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "[['action']"
-										},
-										"sink": {
-											"name": "action",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "[['actor']"
-										},
-										"sink": {
-											"name": "actor",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "[['amount']"
-										},
-										"sink": {
-											"name": "amount",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['id']"
-										},
-										"sink": {
-											"name": "id",
-											"type": "Int64"
-										}
-									},
-									{
-										"source": {
-											"path": "$['timestamp']"
-										},
-										"sink": {
-											"name": "timestamp",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['sitename']"
-										},
-										"sink": {
-											"name": "sitename",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['tablename']"
-										},
-										"sink": {
-											"name": "tablename",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['limits']"
-										},
-										"sink": {
-											"name": "limits",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['buttonseat']"
-										},
-										"sink": {
-											"name": "butttonseat",
-											"type": "Int64"
-										}
-									}
-								],
-								"collectionReference": "$['actions']"
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "JSONStore",
-								"type": "DatasetReference",
-								"parameters": {
-									"jsonPath": "@pipeline().parameters.RawJSONStore"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "ParquetStore",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"parameters": {
-					"RawJSONStore": {
-						"type": "string",
-						"defaultValue": "gamedata\\Data\\Raw\\20190619"
-					},
-					"TargetADLSStore": {
-						"type": "string",
-						"defaultValue": "gamedata\\Data\\Struct\\20190619\\Parquet2"
-					}
-				},
-				"variables": {
-					"boblpath": {
-						"type": "String"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/JSONStore')]",
-				"[concat(variables('factoryId'), '/datasets/ParquetStore')]"
 			]
 		}
 	]

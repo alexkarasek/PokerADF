@@ -23,6 +23,9 @@
 		"FileServer1_password": {
 			"value": ""
 		},
+		"JSON_zipped_accountKey": {
+			"value": ""
+		},
 		"SQLDW_connectionString": {
 			"value": ""
 		},
@@ -37,6 +40,9 @@
 		},
 		"HttpServer1_properties_typeProperties_url": {
 			"value": "https://google.com"
+		},
+		"JSON_zipped_properties_typeProperties_url": {
+			"value": "https://akpshhdatalake.dfs.core.windows.net"
 		},
 		"AzDev01Trigger_properties_typeProperties_scope": {
 			"value": "/subscriptions/1be2307a-3f38-4358-9243-da34bdd7eb2d/resourceGroups/ak-PSHandHistory/providers/Microsoft.Storage/storageAccounts/akpshharchive"
