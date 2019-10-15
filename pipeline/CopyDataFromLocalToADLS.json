@@ -197,10 +197,7 @@
 				"outputs": [
 					{
 						"referenceName": "ParquetStore",
-						"type": "DatasetReference",
-						"parameters": {
-							"parquetPath": "@pipeline().parameters.TargetADLSStore"
-						}
+						"type": "DatasetReference"
 					}
 				]
 			}
@@ -208,7 +205,7 @@
 		"parameters": {
 			"localdir": {
 				"type": "string",
-				"defaultValue": "blah"
+				"defaultValue": "E:\\Data\\PS\\HandHistory\\Bulk\\2019-06-19\\JSON"
 			},
 			"RawJSONStore": {
 				"type": "string",
