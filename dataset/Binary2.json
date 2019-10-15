@@ -12,6 +12,9 @@
 				"type": "AzureBlobFSLocation",
 				"folderPath": "Data/Test/Struct/Sample3",
 				"fileSystem": "gamedata"
+			},
+			"compression": {
+				"type": "deflate"
 			}
 		}
 	}
