@@ -1468,6 +1468,96 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/CopyDataFromLocalToADLS-copyonly')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy_Local_to_ADLS",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "FileServerReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": {
+										"value": "@{pipeline().parameters.localdir}",
+										"type": "Expression"
+									},
+									"wildcardFileName": "*.json",
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings",
+									"quoteAllText": true
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "LocalSrc",
+								"type": "DatasetReference",
+								"parameters": {
+									"localPath": "@pipeline().parameters.localdir"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "JSONStore",
+								"type": "DatasetReference",
+								"parameters": {
+									"jsonPath": "@pipeline().parameters.RawJSONStore"
+								}
+							}
+						]
+					}
+				],
+				"parameters": {
+					"localdir": {
+						"type": "string",
+						"defaultValue": "E:\\Data\\PS\\HandHistory\\Bulk\\2019-06-19\\JSON"
+					},
+					"RawJSONStore": {
+						"type": "string",
+						"defaultValue": "gamedata\\Data\\Raw\\20190619"
+					},
+					"TargetADLSStore": {
+						"type": "string",
+						"defaultValue": "gamedata\\Data\\Struct\\Text\\20190619"
+					}
+				},
+				"variables": {
+					"boblpath": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/LocalSrc')]",
+				"[concat(variables('factoryId'), '/datasets/JSONStore')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/CopyDataFromLocalToADLS')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1515,14 +1605,18 @@
 							{
 								"referenceName": "LocalSrc",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"localPath": "@pipeline().parameters.localdir"
+								}
 							}
 						],
 						"outputs": [
 							{
 								"referenceName": "JSONStore",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"jsonPath": "@pipeline().parameters.RawJSONStore"
+								}
 							}
 						]
 					},
@@ -1679,7 +1773,7 @@
 				"parameters": {
 					"localdir": {
 						"type": "string",
-						"defaultValue": "blah"
+						"defaultValue": "E:\\Data\\PS\\HandHistory\\Bulk\\2019-06-19\\JSON"
 					},
 					"RawJSONStore": {
 						"type": "string",
@@ -1917,11 +2011,21 @@
 					"referenceName": "FileServer1",
 					"type": "LinkedServiceReference"
 				},
+				"parameters": {
+					"localPath": {
+						"type": "string",
+						"defaultValue": "@pipeline().parameters.localdir"
+					}
+				},
 				"annotations": [],
 				"type": "Json",
 				"typeProperties": {
 					"location": {
-						"type": "FileServerLocation"
+						"type": "FileServerLocation",
+						"folderPath": {
+							"value": "@dataset().localPath",
+							"type": "Expression"
+						}
 					}
 				},
 				"schema": {}
@@ -1939,13 +2043,21 @@
 					"referenceName": "ADLSData",
 					"type": "LinkedServiceReference"
 				},
+				"parameters": {
+					"parquetPath": {
+						"type": "string",
+						"defaultValue": "@pipeline().parameters.TargetADLSStore"
+					}
+				},
 				"annotations": [],
 				"type": "Parquet",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"folderPath": "Data/Test/Struct/Sample2",
-						"fileSystem": "gamedata"
+						"fileSystem": {
+							"value": "@dataset().parquetPath",
+							"type": "Expression"
+						}
 					},
 					"compressionCodec": "snappy"
 				},
