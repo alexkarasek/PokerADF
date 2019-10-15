@@ -16,13 +16,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "2019-06-19.zip",
-				"folderPath": "Data/Raw",
-				"fileSystem": "gamedata"
-			},
-			"compression": {
-				"type": "deflate",
-				"level": "Fastest"
+				"fileSystem": {
+					"value": "@dataset().jsonPath",
+					"type": "Expression"
+				}
 			}
 		},
 		"schema": {
