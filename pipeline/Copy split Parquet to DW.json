@@ -155,10 +155,7 @@
 				"inputs": [
 					{
 						"referenceName": "ParquetStore",
-						"type": "DatasetReference",
-						"parameters": {
-							"parquetPath": "@pipeline().parameters.TargetADLSStore"
-						}
+						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
