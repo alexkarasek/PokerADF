@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy_Local_to_Blobs",
+				"name": "Copy_Local_to_ADLS",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
