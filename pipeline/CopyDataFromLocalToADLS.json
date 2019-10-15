@@ -43,13 +43,19 @@
 				"inputs": [
 					{
 						"referenceName": "LocalSrc",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"localPath": "@pipeline().parameters.localdir"
+						}
 					}
 				],
 				"outputs": [
 					{
 						"referenceName": "JSONStore",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"jsonPath": "@pipeline().parameters.RawJSONStore"
+						}
 					}
 				]
 			},
