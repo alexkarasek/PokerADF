@@ -16,10 +16,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileSystem": {
-					"value": "@dataset().textPath",
-					"type": "Expression"
-				}
+				"folderPath": "Data/Test/Struct/Sample3",
+				"fileSystem": "gamedata"
 			},
 			"columnDelimiter": "|",
 			"escapeChar": "",
