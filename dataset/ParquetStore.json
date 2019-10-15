@@ -5,13 +5,21 @@
 			"referenceName": "ADLSData",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"parquetPath": {
+				"type": "string",
+				"defaultValue": "@pipeline().parameters.TargetADLSStore"
+			}
+		},
 		"annotations": [],
 		"type": "Parquet",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"folderPath": "Data/Test/Struct/Sample2",
-				"fileSystem": "gamedata"
+				"fileSystem": {
+					"value": "@dataset().parquetPath",
+					"type": "Expression"
+				}
 			},
 			"compressionCodec": "snappy"
 		},
