@@ -1503,7 +1503,6 @@
 										"value": "@{pipeline().parameters.localdir}",
 										"type": "Expression"
 									},
-									"wildcardFileName": "*.json",
 									"enablePartitionDiscovery": false
 								}
 							},
@@ -2362,7 +2361,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "FileServerLocation",
-						"folderPath": {
+						"fileName": {
 							"value": "@dataset().localPath",
 							"type": "Expression"
 						}
