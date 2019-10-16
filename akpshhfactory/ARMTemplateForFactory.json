@@ -1517,7 +1517,8 @@
 									"quoteAllText": true
 								}
 							},
-							"enableStaging": false
+							"enableStaging": false,
+							"parallelCopies": 4
 						},
 						"inputs": [
 							{
