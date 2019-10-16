@@ -2043,16 +2043,6 @@
 						]
 					}
 				],
-				"parameters": {
-					"RawJSONStore": {
-						"type": "string",
-						"defaultValue": "gamedata\\Data\\Raw\\20190619"
-					},
-					"TargetADLSStore": {
-						"type": "string",
-						"defaultValue": "gamedata\\Data\\Struct\\20190619\\Text2"
-					}
-				},
 				"variables": {
 					"boblpath": {
 						"type": "String"
@@ -2082,6 +2072,10 @@
 						"fileName": "2019-06-19.zip",
 						"folderPath": "Data/Raw",
 						"fileSystem": "gamedata"
+					},
+					"compression": {
+						"type": "ZipDeflate",
+						"level": "Fastest"
 					}
 				}
 			},
@@ -2105,9 +2099,6 @@
 						"type": "AzureBlobFSLocation",
 						"folderPath": "Data/Test/Struct/Sample3",
 						"fileSystem": "gamedata"
-					},
-					"compression": {
-						"type": "deflate"
 					}
 				}
 			},
