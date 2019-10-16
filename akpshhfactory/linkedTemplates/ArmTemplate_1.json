@@ -1660,7 +1660,7 @@
 								}
 							},
 							"enableStaging": false,
-							"parallelCopies": 8
+							"parallelCopies": 16
 						},
 						"inputs": [
 							{
