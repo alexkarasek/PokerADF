@@ -24,7 +24,6 @@
 								"value": "@{pipeline().parameters.localdir}",
 								"type": "Expression"
 							},
-							"wildcardFileName": "*.json",
 							"enablePartitionDiscovery": false
 						}
 					},
