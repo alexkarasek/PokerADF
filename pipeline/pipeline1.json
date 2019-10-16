@@ -148,16 +148,6 @@
 				]
 			}
 		],
-		"parameters": {
-			"RawJSONStore": {
-				"type": "string",
-				"defaultValue": "gamedata\\Data\\Raw\\20190619"
-			},
-			"TargetADLSStore": {
-				"type": "string",
-				"defaultValue": "gamedata\\Data\\Struct\\20190619\\Text2"
-			}
-		},
 		"variables": {
 			"boblpath": {
 				"type": "String"
