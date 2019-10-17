@@ -1,9 +1,9 @@
 {
-	"name": "TestWidgets",
+	"name": "Call ADB Notebook",
 	"properties": {
 		"activities": [
 			{
-				"name": "Notebook1",
+				"name": "Parse JSON into Parquet",
 				"type": "DatabricksNotebook",
 				"dependsOn": [],
 				"policy": {
