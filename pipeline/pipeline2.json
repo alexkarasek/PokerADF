@@ -15,7 +15,7 @@
 				},
 				"userProperties": [
 					{
-						"name": "testvar",
+						"name": "%testvar",
 						"value": "foo"
 					}
 				],
