@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"notebookPath": "/Users/alkarase@microsoft.com/PSHHArchive/tst",
 					"baseParameters": {
-						"input": "testvar"
+						"input3": "testvar"
 					}
 				},
 				"linkedServiceName": {
