@@ -13,14 +13,12 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": [
-					{
-						"name": "%testvar",
-						"value": "foo"
-					}
-				],
+				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Users/alkarase@microsoft.com/PSHHArchive/tst"
+					"notebookPath": "/Users/alkarase@microsoft.com/PSHHArchive/tst",
+					"baseParameters": {
+						"input": "testvar"
+					}
 				},
 				"linkedServiceName": {
 					"referenceName": "AzureDatabricks1",
