@@ -1,0 +1,159 @@
+{
+	"name": "pipeline1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy_JSON_to_ADLSStruct",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "BinarySource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true
+						}
+					},
+					"sink": {
+						"type": "BinarySink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "['GameActionId']"
+								},
+								"sink": {
+									"name": "GameActionId",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "['streetname']"
+								},
+								"sink": {
+									"name": "streetname",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['action']"
+								},
+								"sink": {
+									"name": "action",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['actor']"
+								},
+								"sink": {
+									"name": "actor",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['amount']"
+								},
+								"sink": {
+									"name": "amount",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"path": "$['id']"
+								},
+								"sink": {
+									"name": "id",
+									"type": "Int64"
+								}
+							},
+							{
+								"source": {
+									"path": "$['timestamp']"
+								},
+								"sink": {
+									"name": "timestamp",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['sitename']"
+								},
+								"sink": {
+									"name": "sitename",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['tablename']"
+								},
+								"sink": {
+									"name": "tablename",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['limits']"
+								},
+								"sink": {
+									"name": "limits",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['buttonseat']"
+								},
+								"sink": {
+									"name": "butttonseat",
+									"type": "Int64"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Binary1",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Binary2",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"variables": {
+			"boblpath": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

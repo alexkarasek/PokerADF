@@ -5,11 +5,21 @@
 			"referenceName": "FileServer1",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"localPath": {
+				"type": "string",
+				"defaultValue": "@pipeline().parameters.localdir"
+			}
+		},
 		"annotations": [],
 		"type": "Json",
 		"typeProperties": {
 			"location": {
-				"type": "FileServerLocation"
+				"type": "FileServerLocation",
+				"fileName": {
+					"value": "@dataset().localPath",
+					"type": "Expression"
+				}
 			}
 		}
 	},

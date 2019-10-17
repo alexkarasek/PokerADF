@@ -23,6 +23,53 @@
 			},
 			"compressionCodec": "snappy"
 		},
-		"schema": []
+		"schema": [
+			{
+				"name": "GameActionId",
+				"type": "INT32"
+			},
+			{
+				"name": "streetname",
+				"type": "UTF8"
+			},
+			{
+				"name": "action",
+				"type": "UTF8"
+			},
+			{
+				"name": "actor",
+				"type": "UTF8"
+			},
+			{
+				"name": "amount",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "id",
+				"type": "INT64"
+			},
+			{
+				"name": "timestamp",
+				"type": "UTF8"
+			},
+			{
+				"name": "sitename",
+				"type": "UTF8"
+			},
+			{
+				"name": "tablename",
+				"type": "UTF8"
+			},
+			{
+				"name": "limits",
+				"type": "UTF8"
+			},
+			{
+				"name": "butttonseat",
+				"type": "INT64"
+			}
+		]
 	}
 }
