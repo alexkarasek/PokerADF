@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"notebookPath": "/Users/alkarase@microsoft.com/PSHHArchive/Widgets",
 					"baseParameters": {
-						"input": "testvar3",
+						"input": "",
 						"inParam": "Alex"
 					}
 				},
