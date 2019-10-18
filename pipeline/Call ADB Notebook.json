@@ -27,6 +27,14 @@
 				}
 			}
 		],
+		"parameters": {
+			"RawJSONStore": {
+				"type": "string"
+			},
+			"TargetADLSStore": {
+				"type": "string"
+			}
+		},
 		"annotations": []
 	}
 }
