@@ -7,7 +7,7 @@
 		"typeProperties": {
 			"host": "C:\\Users\\akdev01_admin",
 			"userId": "akdev01_admin",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI3ZDBhZmNhOS0xNjc2LTQ2YzMtOTk0My0zNzdmOWYyM2VjMDkiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJkOWRmNTk4ZC05ZTA1LTRmNDgtYmVhMy0zYWIxOTZhNDZkNDQiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
 		},
 		"connectVia": {
 			"referenceName": "integrationRuntime3",

@@ -1,0 +1,46 @@
+{
+	"name": "Call ADB Notebook",
+	"properties": {
+		"activities": [
+			{
+				"name": "Parse JSON into Parquet",
+				"type": "DatabricksNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/alkarase@microsoft.com/PSHHArchive/PSHH ADF-test1",
+					"baseParameters": {
+						"RawJSONStore": {
+							"value": "@pipeline().parameters.RawJSONStore",
+							"type": "Expression"
+						},
+						"TargetADLSStore": {
+							"value": "@pipeline().parameters.TargetADLSStore",
+							"type": "Expression"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureDatabricks1",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"parameters": {
+			"RawJSONStore": {
+				"type": "string"
+			},
+			"TargetADLSStore": {
+				"type": "string"
+			}
+		},
+		"annotations": []
+	}
+}

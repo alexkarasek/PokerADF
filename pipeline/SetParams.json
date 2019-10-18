@@ -46,15 +46,11 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "CopyDataFromLocalToADLS",
+						"referenceName": "Call ADB Notebook",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true,
 					"parameters": {
-						"localdir": {
-							"value": "@{activity('Lookup params').output.FirstRow.Prop_0}",
-							"type": "Expression"
-						},
 						"RawJSONStore": {
 							"value": "@{activity('Lookup params').output.FirstRow.Prop_1}",
 							"type": "Expression"
