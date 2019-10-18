@@ -17,8 +17,14 @@
 				"typeProperties": {
 					"notebookPath": "/Users/alkarase@microsoft.com/PSHHArchive/Widgets",
 					"baseParameters": {
-						"input": "",
-						"inParam": "Alex"
+						"RawJSONStore": {
+							"value": "@pipeline().parameters.RawJSONStore",
+							"type": "Expression"
+						},
+						"TargetADLSStore": {
+							"value": "@pipeline().parameters.TargetADLSStore",
+							"type": "Expression"
+						}
 					}
 				},
 				"linkedServiceName": {
