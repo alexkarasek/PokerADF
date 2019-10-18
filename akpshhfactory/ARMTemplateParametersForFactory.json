@@ -17,6 +17,9 @@
 		"ADLSData_accountKey": {
 			"value": ""
 		},
+		"AzureDatabricks1_accessToken": {
+			"value": ""
+		},
 		"BlobSrc_connectionString": {
 			"value": ""
 		},
@@ -37,9 +40,6 @@
 		},
 		"FileServer1_properties_typeProperties_userId": {
 			"value": "akdev01_admin"
-		},
-		"HttpServer1_properties_typeProperties_url": {
-			"value": "https://google.com"
 		},
 		"JSON_zipped_properties_typeProperties_url": {
 			"value": "https://akpshhdatalake.dfs.core.windows.net"
