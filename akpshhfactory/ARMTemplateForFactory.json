@@ -805,11 +805,15 @@
 							"waitOnCompletion": true,
 							"parameters": {
 								"RawJSONStore": {
-									"value": "@{activity('Lookup params').output.FirstRow.Prop_1}",
+									"value": "@{activity('Lookup params').output.FirstRow.RawJSONStore}",
 									"type": "Expression"
 								},
 								"TargetADLSStore": {
-									"value": "@{activity('Lookup params').output.FirstRow.Prop_2}",
+									"value": "@{activity('Lookup params').output.FirstRow.TargetADLSStore}",
+									"type": "Expression"
+								},
+								"datePart": {
+									"value": "@{activity('Lookup params').output.FirstRow.datePart}",
 									"type": "Expression"
 								}
 							}
@@ -1048,16 +1052,26 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": "*.rdy",
+						"fileName": "Pipeline.rdy",
 						"folderPath": "Processing/Flags",
 						"fileSystem": "gamedata"
 					},
 					"columnDelimiter": "|",
 					"escapeChar": "\\",
+					"firstRowAsHeader": true,
 					"quoteChar": "\""
 				},
 				"schema": [
 					{
+						"name": "RawJSONStore",
+						"type": "String"
+					},
+					{
+						"name": "TargetADLSStore",
+						"type": "String"
+					},
+					{
+						"name": "datePart",
 						"type": "String"
 					}
 				]
