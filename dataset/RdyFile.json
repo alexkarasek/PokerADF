@@ -10,16 +10,26 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "*.rdy",
+				"fileName": "Pipeline.rdy",
 				"folderPath": "Processing/Flags",
 				"fileSystem": "gamedata"
 			},
 			"columnDelimiter": "|",
 			"escapeChar": "\\",
+			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
 		"schema": [
 			{
+				"name": "RawJSONStore",
+				"type": "String"
+			},
+			{
+				"name": "TargetADLSStore",
+				"type": "String"
+			},
+			{
+				"name": "datePart",
 				"type": "String"
 			}
 		]
