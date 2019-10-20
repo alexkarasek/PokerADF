@@ -15,7 +15,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Users/alkarase@microsoft.com/PSHHArchive/PSHH ADF-test1",
+					"notebookPath": "/Users/alkarase@microsoft.com/PSHHArchive/PSHH ADF",
 					"baseParameters": {
 						"RawJSONStore": {
 							"value": "@pipeline().parameters.RawJSONStore",
