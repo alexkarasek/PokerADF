@@ -24,6 +24,10 @@
 						"TargetADLSStore": {
 							"value": "@pipeline().parameters.TargetADLSStore",
 							"type": "Expression"
+						},
+						"datePart": {
+							"value": "@pipeline().parameters.datePart",
+							"type": "Expression"
 						}
 					}
 				},
