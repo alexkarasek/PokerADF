@@ -266,6 +266,9 @@
 					},
 					"TargetADLSStore": {
 						"type": "string"
+					},
+					"datePart": {
+						"type": "string"
 					}
 				},
 				"annotations": []
