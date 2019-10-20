@@ -52,11 +52,15 @@
 					"waitOnCompletion": true,
 					"parameters": {
 						"RawJSONStore": {
-							"value": "@{activity('Lookup params').output.FirstRow.Prop_1}",
+							"value": "@{activity('Lookup params').output.FirstRow.RawJSONStore}",
 							"type": "Expression"
 						},
 						"TargetADLSStore": {
-							"value": "@{activity('Lookup params').output.FirstRow.Prop_2}",
+							"value": "@{activity('Lookup params').output.FirstRow.TargetADLSStore}",
+							"type": "Expression"
+						},
+						"datePart": {
+							"value": "@{activity('Lookup params').output.FirstRow.datePart}",
 							"type": "Expression"
 						}
 					}
