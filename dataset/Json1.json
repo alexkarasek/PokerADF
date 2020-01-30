@@ -5,12 +5,6 @@
 			"referenceName": "ADLSData",
 			"type": "LinkedServiceReference"
 		},
-		"parameters": {
-			"jsonPath": {
-				"type": "string",
-				"defaultValue": "@pipeline().parameters.RawJSONStore"
-			}
-		},
 		"annotations": [],
 		"type": "Json",
 		"typeProperties": {
