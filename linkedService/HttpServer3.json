@@ -4,7 +4,7 @@
 		"annotations": [],
 		"type": "HttpServer",
 		"typeProperties": {
-			"url": "http://files.zillowstatic.com",
+			"url": "http://files.zillowstatic.com/research/public/Zip/Zip_MedianRentalPrice_1Bedroom.csv",
 			"enableServerCertificateValidation": true,
 			"authenticationType": "Anonymous"
 		}
